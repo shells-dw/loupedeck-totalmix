@@ -15,7 +15,6 @@ namespace Loupedeck.TotalMixPlugin
         String action;
         private Single valueFloat;
         private Int32 _toggle = 0;
-        public static Dictionary<String, String> currentVolVals = new Dictionary<String, String>();
 
         // build the action
         public OutputChannelAdjustments() : base(displayName: "Output Channel Dials", description: "Options for Output Channels", groupName: "Output Channel Dials", hasReset: false) => this.MakeProfileAction("tree");
@@ -87,28 +86,6 @@ namespace Loupedeck.TotalMixPlugin
                 }
             }
 
-        }
-
-        // dial is pressed - flipping between -infinity and 0dB
-        protected override void RunCommand(String actionParameter)
-        {
-            if (actionParameter.Contains("|"))
-            {
-                this.action = actionParameter.Split("|")[0];
-                var channel = actionParameter.Split("|")[1];
-                if (this._toggle == 0)
-                {
-
-                    Task.Run(() => HelperFunctions.SendOscCommand($"/1/{this.action}{channel}", 0)).GetAwaiter().GetResult();
-                    this._toggle++;
-                }
-                else
-                {
-                    Task.Run(() => HelperFunctions.SendOscCommand($"/1/{this.action}{channel}", (Single)0.8172043)).GetAwaiter().GetResult();
-                    this._toggle = 0;
-                }
-            }
-            this.AdjustmentValueChanged(actionParameter); // Notify the Loupedeck service that the adjustment value has changed.
         }
 
         // Returns the adjustment value that is shown next to the dial.

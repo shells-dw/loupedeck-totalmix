@@ -51,25 +51,6 @@ namespace Loupedeck.TotalMixPlugin
             }
         }
 
-        // dial is pressed - flipping between -infinity and 0dB
-        protected override void RunCommand(String actionParameter)
-        {
-            if (this._toggle == 0)
-            {
-
-                Task.Run(() => HelperFunctions.SendOscCommand($"/1/mastervolume", 0));
-                this._toggle++;
-            }
-            else
-            {
-                Task.Run(() => HelperFunctions.SendOscCommand($"/1/mastervolume", (Single)0.8172043));
-                this._toggle = 0;
-            }
-            this.AdjustmentValueChanged(actionParameter); // Notify the Loupedeck service that the adjustment value has changed.
-        }
-
-
-
         // Returns the adjustment value that is shown next to the dial.
         protected override String GetAdjustmentValue(String actionParameter)
         {

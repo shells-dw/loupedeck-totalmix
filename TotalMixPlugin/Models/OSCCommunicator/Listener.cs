@@ -12,8 +12,6 @@ namespace Loupedeck.TotalMixPlugin
         // assign variables
         static OscReceiver receiver;
 
-
-
         // main listener Task
         public Task Listen(String bus, String address, Single value)
         {

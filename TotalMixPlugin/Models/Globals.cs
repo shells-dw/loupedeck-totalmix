@@ -11,8 +11,6 @@ namespace Loupedeck.TotalMixPlugin
         // holds all page 1 responses for all 3 busses, once filled
         public static Dictionary<String, Dictionary<String, String>> bankSettings = new Dictionary<String, Dictionary<String, String>>();
         public static Dictionary<String, Dictionary<String, String>> recentUpdates = new Dictionary<String, Dictionary<String, String>>();
-        public static Dictionary<String, String> faderLookupTable = new Dictionary<String, String>();
-        public static Dictionary<String, String> realSteps = new Dictionary<String, String>();
 
         // last known device state
         public static Int32 deviceState;

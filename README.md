@@ -43,11 +43,15 @@ No additional software is needed. In theory this should also be able to control 
 Note: if you're using a (software) firewall on your PC and/or any firewall between the StreamDeck and the target PC - make sure to allow the plugin to communicate with the TotalMix port as well as allow TotalMix to listen to it. 
 
 ## settings.json
-%localappdata%\Loupedeck\PluginData\TotalMix containts the file settings.json (which is created with default values during the first start of the plugin and read during every start)
+Windows: %localappdata%\Loupedeck\PluginData\TotalMix
+MacOS: /Users/USERNAME/.local/share/Loupedeck/PluginData/TotalMix
+contains the file settings.json (which is created with default values during the first start of the plugin and read during every start)
+
 ```json
 {"host":"127.0.0.1","port":"7001","sendPort":"9001","backgroundPort":"7002","backgroundSendPort":"9002","mirroringEnabled":"true"}
 ```
 where you can configure non-default values or the TotalMix connection.
+
 Note: mirroring of TotalMix is on by default (when you change some values in TotalMix itself or by other means outside the Loupedeck it will be reflected on the Loupedeck plugin), but it has a slight delay as the plugin queries TotalMix. It can have a bit of an performance impact constantly querying the data, which shouldn't be noticeable on most machines, but just in case mirroring isn't needed or wanted, it can be turned off here.
 Also note, mirroring only works for all the main functions, mute, solo, phantom power, volume, gain and pan.
 
@@ -68,17 +72,21 @@ You have the following options:
 
 ## Actions
 
-### General
+### General considerations about channels
 
-It's important to understand that whenever you can select a channel in the dropdown selection in this plugin, this affects TotalMix channel strips as you see them in the software. TotalMix combines a stereo channel to one channel strip. You will not have control over each individual mono channel that's part of a stereo channel.
-What that means is that if you have, for example, a stereo output channel AN1/2, this will be output channel 1. AN3 will be output channel 2 then. However if you have AN1 and AN2 set to mono, AN3 is output channel 3 then. Bear that in mind when you configure actions that are targeted to individual channels across multiple snapshots/mixes or when you change your channel layouts in regards to mono/stereo channels in TotalMix as this will likely break those actions on the StreamDeck and trigger actions on the wrong channels.
+It's important to understand that whenever you can select a channel in the dropdown selection in this plugin, this affects TotalMix channels as you see them in TotalMix mixer view. TotalMix combines a stereo channel to one channel strip. You will not have control over each individual mono channel that's part of a stereo channel.
+
+What that means is that if you have, for example, a stereo output channel AN1/2, both combined channels will be output channel 1. AN3 will be output channel 2 then. However if you have AN1 and AN2 set to mono, AN3 is output channel 3 then.
+
+Keep that in mind when you configure actions that are targeted to individual channels across multiple snapshots/mixes or when you change your channel layouts in regards to mono/stereo channels in TotalMix as this will likely break those actions on the Loupedeck and trigger actions on the wrong channels.
 
 Sadly I can't do anything about that, it's just how TotalMix works currently.
 
 # Limitations
 
 - MIDI: I decided against MIDI support, MIDI functionality is already included in the Loupedeck and requires additional software (virtual MIDI loopback interface) to run, also I'm not sure anyone would actually benefit from supporting MIDI, so I consider it a lot of code for not so much value. Let me know if you desperately need it though.
-- Actions are currently limited to somewhat basic functions that trigger and I can test. I have a Fireface UC available which doesn't support FX, so I can't really test that. Let me know if that's something you need to plugin to support. Talkback is active as long as the button is pressed, which is something I have not yet implemented (as it's the only function that acts that way AFAIK). 
+- Actions are currently limited to somewhat basic functions that trigger and I can test. I have a Fireface UC available which doesn't support FX, so I can't really test that. Let me know if that's something you need the plugin to support.
+- Talkback is active only as long as the button is actually pressed, which is something I have not yet implemented here (as it's the only function that acts that way AFAIK and I don't use it personally, I didn't bother). 
 
 # I have an issue or miss a feature?
 
@@ -91,7 +99,9 @@ If you're interested in using this plugin but something you really need is missi
 
 # Support
 
-If you'd like to drop me a coffee for the hours I've spent on this: [![Tip](https://img.shields.io/badge/Donate-PayPal-green.svg)]( https://www.paypal.com/donate?hosted_button_id=8KXD334CCEEC2) or use Ko-Fi [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Y8Y4CE9LH)
+If you'd like to drop me a coffee for the hours I've spent on this:
+[![Tip](https://img.shields.io/badge/Donate-PayPal-green.svg)]( https://www.paypal.com/donate?hosted_button_id=8KXD334CCEEC2)
+or use Ko-Fi [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Y8Y4CE9LH)
 
 
 # Changelog

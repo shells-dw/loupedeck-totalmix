@@ -6,7 +6,7 @@
 
 # Unofficial Loupedeck RME TotalMix FX Plugin
 
-![Overview](/docs/images/overview.png)
+![Overview](/TotalMixPlugin/docs/images/overview.png)
 
 ## What Is This (and what does it do?)
 
@@ -33,7 +33,7 @@ If you (have to) change these ports, make sure updating them in the plugin confi
 
 Then, make sure to enable "Enable OSC control". Also link both Remote Controllers to the submix. 
 
-![Setup TotalMix OSC](/docs/images/OSC_setup1.png) ![Setup TotalMix OSC 2](/docs/images/OSC_setup2.png)
+![Setup TotalMix OSC](/TotalMixPlugin/docs/images/OSC_setup1.png) ![Setup TotalMix OSC 2](/TotalMixPlugin/docs/images/OSC_setup2.png)
 
 No additional software is needed. In theory this should also be able to control a TotalMix instance running on a different computer than the StreamDeck is attached to - as long as you can reach this machine on the given port with UDP packets. 
 
@@ -53,7 +53,7 @@ Also note, mirroring only works for all the main functions, mute, solo, phantom 
 
 You have the following options:
 
-![Available Actions](/docs/images/LC_actions.png)
+![Available Actions](/TotalMixPlugin/docs/images/LC_actions.png)
 
 - Input/Output/Playback Channel Dials: Dial controls to change Volume, Pan and Gain
 

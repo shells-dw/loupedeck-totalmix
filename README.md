@@ -24,11 +24,11 @@ Enable OSC in RME TotalMix FX' settings (let's call it TotalMix from here on for
 Note that there are 4 OSC Remote Controllers available. If you already use one, set up two for the plugin specifically.
 This plugin uses 2 of them, 1 and 2. 1 is used for the main actions, 2 is used for the background thread that mirrors TotalMix changes to the Loupedeck.
 
-Open "Options" -> "Settings..." in TotalMix, then open the tab "OSC".
-Make sure Remote Controller 1 has a checkmark next to "In Use". By default TotalMix will use the ports 7001 and 9001.
+- Open "Options" -> "Settings..." in TotalMix, then open the tab "OSC".
+- Make sure Remote Controller 1 has a checkmark next to "In Use". By default TotalMix will use the ports 7001 and 9001.
 Note: on MacOS, you'll have to enter "127.0.0.1" in the Remote Controller Address textbox, otherwise it will not work.
-Please also set the "Number of faders per bank" to 16, or it will not fully work.
-Then, do the same for Remote Controller 2. It will default to 7002 and 9002.
+-Please also set the "Number of faders per bank" to 16, or it will not fully work.
+-Then, do the same for Remote Controller 2. It will default to 7002 and 9002.
 If you (have to) change these ports, make sure updating them in the plugin config as well!
 
 Then, make sure to enable "Enable OSC control". Also link both Remote Controllers to the submix. 

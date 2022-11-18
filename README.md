@@ -100,7 +100,7 @@ Initial release
 <!-- Reference Links -->
 
 [Loupedeck]: https://loupedeck.com "Loupedeck.com"
-[Loupedeck]: https://github.com/shells-dw/loupedeck-totalmix/releases "Releases"
+[Releases]: https://github.com/shells-dw/loupedeck-totalmix/releases "Releases"
 [RME TotalMix FX]: https://www.rme-audio.de/totalmix-fx.html "RME's TotalmMix FX product page"
 [GitHub issues]: https://github.com/shells-dw/streamdeck-totalmix/issues "GitHub issues link"
 

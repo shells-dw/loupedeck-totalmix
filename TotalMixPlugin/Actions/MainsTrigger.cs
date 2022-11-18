@@ -1,0 +1,202 @@
+﻿// handling for Main Channel
+
+namespace Loupedeck.TotalMixPlugin
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Runtime.InteropServices;
+    using Loupedeck.TotalMixPlugin.Actions;
+
+    public class MainsTrigger : PluginDynamicCommand
+    {
+        // assign variables
+        private TotalMixPlugin _plugin;
+        private Boolean currentState;
+        private Boolean setToState;
+        private Int32 setToStateInt;
+        [DllImport("user32.dll")]
+        public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+        private const int SW_HIDE = 0;
+        private const int SW_RESTORE = 5;
+        private IntPtr hWnd;
+        private IntPtr hWndCache;
+        private int hWndId;
+        delegate bool EnumThreadDelegate(IntPtr hWnd, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        static extern bool EnumThreadWindows(int dwThreadId, EnumThreadDelegate lpfn,
+            IntPtr lParam);
+
+        static IEnumerable<IntPtr> EnumerateProcessWindowHandles(int processId)
+        {
+            var handles = new List<IntPtr>();
+
+            foreach (ProcessThread thread in Process.GetProcessById(processId).Threads)
+                EnumThreadWindows(thread.Id,
+                    (hWnd, lParam) => { handles.Add(hWnd); return true; }, IntPtr.Zero);
+
+            return handles;
+        }
+
+        // build the action
+        public MainsTrigger() : base()
+        {
+            this.AddParameter("globalMute", "Global Mute", groupName: "Master Channel");
+            this.AddParameter("globalSolo", "Global Solo", groupName: "Master Channel");
+            this.AddParameter("mainDim", "Dim", groupName: "Master Channel");
+            this.AddParameter("mainSpeakerB", "Speaker B", groupName: "Master Channel");
+            this.AddParameter("mainRecall", "Recall", groupName: "Master Channel");
+            this.AddParameter("mainMuteFx", "Mute FX", groupName: "Master Channel");
+            this.AddParameter("mainMono", "Mono", groupName: "Master Channel");
+            this.AddParameter("mainExtIn", "External In", groupName: "Master Channel");
+            this.AddParameter("mainTalkback", "Talkback", groupName: "Master Channel");
+            this.AddParameter("showhideui", "Show / Hide TotalMixFX Window", groupName: "Master Channel");
+
+        }
+        protected override bool OnLoad()
+        {
+            _plugin = base.Plugin as TotalMixPlugin;
+            if (_plugin is null)
+                return false;
+
+            _plugin.UpdatedInputSetting += (sender, e) => this.ActionImageChanged(e.Address);
+            return base.OnLoad();
+        }
+
+        // button is pressed
+        protected override void RunCommand(String actionParameter)
+        {
+            if (actionParameter == "showhideui")
+            {
+                Process[] p = Process.GetProcessesByName("TotalMixFX");
+                hWnd = p[0].MainWindowHandle;
+                IntPtr WindowHandle = EnumerateProcessWindowHandles(p[0].Id).First();
+                if (hWndCache == IntPtr.Zero)
+                {
+                    hWndCache = WindowHandle;
+                }
+                hWndId = (int)p[0].Id;
+                if (hWnd == (IntPtr)0)
+                {
+                    ShowWindowAsync(hWndCache, SW_RESTORE);
+                }
+                else
+                {
+                    ShowWindowAsync(hWnd, SW_HIDE);
+                }
+            }
+            else
+            {
+                // try getting the current state - if there is none or the Global variable doesn't exist, we'll just set it to true *shrug*
+                try
+                {
+                    Globals.bankSettings["Input"].TryGetValue($"/1/{actionParameter}", out var value);
+                    this.currentState = Convert.ToBoolean(Int32.Parse(value));
+                    this.setToState = !this.currentState;
+                }
+                catch
+                {
+                    this.setToState = true;
+                }
+                this.setToStateInt = Convert.ToInt32(this.setToState);
+
+                // send to TotalMix
+                HelperFunctions.SendOscCommand($"/1/{actionParameter}", 1);
+
+                // update Global variable
+                Globals.bankSettings[$"Input"][$"/1/{actionParameter}"] = setToStateInt.ToString();
+
+                // notify Loupedeck about the change
+                this.ActionImageChanged(actionParameter);
+            }
+        }
+
+        // update command image
+        protected override BitmapImage GetCommandImage(String actionParameter, PluginImageSize imageSize)
+        {
+            if (this.Plugin.PluginStatus.Status.ToString() != "Normal")
+            {
+                using (var bitmapBuilder = new BitmapBuilder(imageSize))
+                {
+                    //drawing a black full-size rectangle to overlay the default graphic (TODO: figure out if that's maybe something that is done nicer than this)
+                    bitmapBuilder.DrawRectangle(0, 0, 80, 80, BitmapColor.White);
+                    bitmapBuilder.FillRectangle(0, 0, 80, 80, BitmapColor.White);
+
+                    // draw icons for different cases
+                    bitmapBuilder.DrawText("⚠️", x: 45, y: 10, width: 70, height: 70, BitmapColor.Black, fontSize: 60);
+                    bitmapBuilder.DrawText("Error", x: 5, y: 50, width: 70, height: 40, fontSize: 20, color: BitmapColor.Black);
+                    return bitmapBuilder.ToImage();
+                }
+            }
+            // getting the currentState from Global variable
+            try
+            {
+                Globals.bankSettings["Input"].TryGetValue($"/1/{actionParameter}", out var value);
+                this.currentState = value != null && Convert.ToBoolean(Int32.Parse(value));
+            } catch
+            {
+            
+            }
+            // build the image
+            using (var bitmapBuilder = new BitmapBuilder(imageSize))
+            {
+                bitmapBuilder.DrawRectangle(0, 0, 80, 80, BitmapColor.Black);
+                bitmapBuilder.FillRectangle(0, 0, 80, 80, BitmapColor.Black);
+                switch (actionParameter)
+                {
+                    case "globalMute":
+                        bitmapBuilder.DrawText("Global Mute", x: 0, y: 55, width: 80, height: 15, BitmapColor.White);
+                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("muteOn80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("muteOff80.png")));
+                        break;
+                    case "globalSolo":
+                        bitmapBuilder.DrawText("Global Solo", x: 0, y: 55, width: 80, height: 15, BitmapColor.White);
+                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("soloOn80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("soloOff80.png")));
+                        break;
+                    case "mainDim":
+                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerGreen80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerRed80.png")));
+                        bitmapBuilder.DrawText("Main Dim", x: 5, y: 40, width: 70, height: 40, fontSize: 15, color: BitmapColor.White);
+                        break;
+                    case "mainSpeakerB":
+                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerGreen80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerRed80.png")));
+                        bitmapBuilder.DrawText("Speaker B", x: 5, y: 40, width: 70, height: 40, fontSize: 15, color: BitmapColor.White);
+                        break;
+                    case "mainRecall":
+                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerGreen80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerRed80.png")));
+                        bitmapBuilder.DrawText("Main Recall", x: 5, y: 40, width: 70, height: 40, fontSize: 15, color: BitmapColor.White);
+                        break;
+                    case "mainMuteFx":
+                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerGreen80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerRed80.png")));
+                        bitmapBuilder.DrawText("Main Mute FX", x: 5, y: 40, width: 70, height: 40, fontSize: 15, color: BitmapColor.White);
+                        break;
+                    case "mainMono":
+                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerGreen80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerRed80.png")));
+                        bitmapBuilder.DrawText("Main Mono", x: 5, y: 40, width: 70, height: 40, fontSize: 15, color: BitmapColor.White);
+                        break;
+                    case "mainExtIn":
+                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerGreen80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerRed80.png")));
+                        bitmapBuilder.DrawText("Ext. Input", x: 5, y: 40, width: 70, height: 40, fontSize: 15, color: BitmapColor.White);
+                        break;
+                    case "mainTalkback":
+                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerGreen80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerRed80.png")));
+                        bitmapBuilder.DrawText("Main Talkback", x: 5, y: 40, width: 70, height: 40, fontSize: 15, color: BitmapColor.White);
+                        break;
+                    case "showhideui":
+                        bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerNeutral80.png")));
+                        bitmapBuilder.DrawText("Show/Hide UI", x: 5, y: 40, width: 70, height: 40, fontSize: 15, color: BitmapColor.White);
+                        break;
+                    default:
+                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerGreen80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerRed80.png")));
+                        bitmapBuilder.DrawRectangle(0, 40, 80, 40, BitmapColor.Black);
+                        bitmapBuilder.FillRectangle(0, 40, 80, 40, BitmapColor.Black);
+                        bitmapBuilder.DrawText(actionParameter, x: 5, y: 40, width: 70, height: 40, fontSize: 15, color: BitmapColor.White);
+                        break;
+
+                }
+                return bitmapBuilder.ToImage();
+            }
+        }
+
+    }
+}

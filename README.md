@@ -1,6 +1,4 @@
- ![GitHub](https://img.shields.io/github/license/shells-dw/loupedeck-totalmix)
  ![GitHub last commit](https://img.shields.io/github/last-commit/shells-dw/loupedeck-totalmix)
-  ![GitHub downloads](https://img.shields.io/github/downloads/shells-dw/loupedeck-totalmix/total)
  [![Tip](https://img.shields.io/badge/Donate-PayPal-green.svg)]( https://www.paypal.com/donate?hosted_button_id=8KXD334CCEEC2) / [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Y8Y4CE9LH)
 
 

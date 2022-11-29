@@ -63,23 +63,6 @@ namespace Loupedeck.TotalMixPlugin
                         File.WriteAllText(filePath, jsonObj.ToString());
                     }
                 }
-                /*     using (StreamReader fileReader = File.OpenText(filePath))
-                     using (JsonTextReader reader = new JsonTextReader(fileReader))
-                     using (StreamWriter fileWriter = File.CreateText(filePath))
-                     using (JsonTextWriter writer = new JsonTextWriter(fileWriter))
-                     {
-                         JObject jObj = (JObject)JToken.ReadFrom(reader);
-                         foreach (var setting in this.expectedSettings)
-                         {
-                             if (!jObj.ContainsKey(setting))
-                             {
-                                 jObj.Add(setting, "false");
-                                 jObj.WriteTo(writer);
-                             }
-                         }
-                     }
-                     return true;
-                 */
             }
             ResourceReader.CreateFileFromResource("Loupedeck.TotalMixPlugin.settings.json", filePath);
             return true;

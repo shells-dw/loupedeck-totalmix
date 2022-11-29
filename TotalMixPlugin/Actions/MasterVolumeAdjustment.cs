@@ -3,7 +3,6 @@
 namespace Loupedeck.TotalMixPlugin
 {
     using System;
-    using System.Runtime.Remoting.Channels;
     using System.Threading.Tasks;
     using Loupedeck.TotalMixPlugin.Actions;
 
@@ -11,7 +10,6 @@ namespace Loupedeck.TotalMixPlugin
     {
         // assign variables
         private TotalMixPlugin _plugin;
-        private Int32 _toggle = 0;
         private Single valueFloat;
 
         // build the action
@@ -22,12 +20,14 @@ namespace Loupedeck.TotalMixPlugin
         }
         protected override bool OnLoad()
         {
-            _plugin = base.Plugin as TotalMixPlugin;
-            if (_plugin is null)
+            this._plugin = base.Plugin as TotalMixPlugin;
+            if (this._plugin is null)
+            {
                 return false;
+            }
 
-            _plugin.UpdatedInputSetting += (sender, e) => this.ActionImageChanged(e.Address);
-            _plugin.UpdatedInputSetting += (sender, e) => this.AdjustmentValueChanged(e.Address);
+            this._plugin.UpdatedInputSetting += (sender, e) => this.ActionImageChanged(e.Address);
+            this._plugin.UpdatedInputSetting += (sender, e) => this.AdjustmentValueChanged(e.Address);
             return base.OnLoad();
         }
 
@@ -66,7 +66,7 @@ namespace Loupedeck.TotalMixPlugin
             }
         }
 
-        protected override BitmapImage GetAdjustmentImage(string actionParameter, PluginImageSize imageSize)
+        protected override BitmapImage GetAdjustmentImage(String actionParameter, PluginImageSize imageSize)
         {
             if (this.Plugin.PluginStatus.Status.ToString() != "Normal")
             {

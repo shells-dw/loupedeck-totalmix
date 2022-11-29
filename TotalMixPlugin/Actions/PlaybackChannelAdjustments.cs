@@ -3,7 +3,6 @@
 namespace Loupedeck.TotalMixPlugin
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Loupedeck.TotalMixPlugin.Actions;
 
@@ -14,7 +13,6 @@ namespace Loupedeck.TotalMixPlugin
         readonly String bus = "Playback";
         String action;
         private Single valueFloat;
-        private Int32 _toggle = 0;
 
         // build the action
         public PlaybackChannelAdjustments() : base(displayName: "Playback Channel Dials", description: "Options for Playback Channels", groupName: "Playback Channel Dials", hasReset: false) => this.MakeProfileAction("tree");
@@ -37,11 +35,13 @@ namespace Loupedeck.TotalMixPlugin
         }
         protected override bool OnLoad()
         {
-            _plugin = base.Plugin as TotalMixPlugin;
-            if (_plugin is null)
+            this._plugin = base.Plugin as TotalMixPlugin;
+            if (this._plugin is null)
+            {
                 return false;
+            }
 
-            _plugin.UpdatedPlaybackSetting += (sender, e) => this.ActionImageChanged(e.Address);
+            this._plugin.UpdatedPlaybackSetting += (sender, e) => this.ActionImageChanged(e.Address);
             return base.OnLoad();
         }
 
@@ -156,7 +156,7 @@ namespace Loupedeck.TotalMixPlugin
         }
 
         // drawing what is actually shown on the device (overwriting defaults to make it more useful by including channel names and friendly descriptors)
-        protected override BitmapImage GetAdjustmentImage(string actionParameter, PluginImageSize imageSize)
+        protected override BitmapImage GetAdjustmentImage(String actionParameter, PluginImageSize imageSize)
         {
             if (this.Plugin.PluginStatus.Status.ToString() != "Normal")
             {

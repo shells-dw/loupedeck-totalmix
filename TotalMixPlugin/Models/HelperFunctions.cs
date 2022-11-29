@@ -116,6 +116,29 @@ namespace Loupedeck.TotalMixPlugin.Actions
             }
             return configDeviceMirroring;
         }
+        // option to skip availability checks of TotalMix
+        public String GetSkipDeviceChecks(String PluginDataDirectory)
+        {
+            try
+            {
+                String configSkipChecks;
+                if (Globals.skipChecks == null)
+                {
+                    var json = File.ReadAllText(Path.Combine(PluginDataDirectory, "settings.json"));
+                    var configFileSettings = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(json);
+                    configSkipChecks = configFileSettings.skipChecks.Value;
+                    Globals.skipChecks = configSkipChecks;
+                }
+                else
+                {
+                    configSkipChecks = Globals.skipChecks;
+                }
+                return configSkipChecks;
+            } catch
+            {
+                return "false";
+            }
+        }
         // here the magic happens (imagine the sparkles and rainbows yourself) - kidding, just taking the address and value from the call, combining it with the Global variables and send that all to the interface
         public static void SendOscCommand(String name, Single value)
         {

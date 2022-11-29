@@ -7,7 +7,7 @@
 
         public TotalMixUpdatedSetting(string address)
         {
-            Address = address;
+            this.Address = address;
         }
     }
 }

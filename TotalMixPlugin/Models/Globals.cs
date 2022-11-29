@@ -25,5 +25,6 @@ namespace Loupedeck.TotalMixPlugin
         public static Int32 interfaceBackgroundPort;
         public static Int32 interfaceBackgroundSendPort;
         public static String mirroringRequested;
+        public static String skipChecks;
     }
 }

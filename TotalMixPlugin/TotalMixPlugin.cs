@@ -5,6 +5,7 @@ namespace Loupedeck.TotalMixPlugin
     using System;
     using System.Linq;
     using System.Threading;
+
     using Loupedeck.TotalMixPlugin.Actions;
     using Loupedeck.TotalMixPlugin.Models.Events;
 
@@ -60,11 +61,11 @@ namespace Loupedeck.TotalMixPlugin
                 {
                     var TotalMixUpdatedEventArgsGlobal = new TotalMixUpdatedSetting($"{Globals.recentUpdates[bus].ElementAt(index).Key}");
                     UpdatedInputSetting?.Invoke(this, TotalMixUpdatedEventArgsGlobal);
-                } 
+                }
                 else
-                { 
-                var TotalMixUpdatedEventArgs = new TotalMixUpdatedSetting($"{Globals.recentUpdates[bus].ElementAt(index).Key}|{Globals.recentUpdates[bus].ElementAt(index).Value}");
-                UpdatedInputSetting?.Invoke(this, TotalMixUpdatedEventArgs);
+                {
+                    var TotalMixUpdatedEventArgs = new TotalMixUpdatedSetting($"{Globals.recentUpdates[bus].ElementAt(index).Key}|{Globals.recentUpdates[bus].ElementAt(index).Value}");
+                    UpdatedInputSetting?.Invoke(this, TotalMixUpdatedEventArgs);
                 }
             }
             if (bus == "Output")
@@ -96,16 +97,19 @@ namespace Loupedeck.TotalMixPlugin
             helper.GetDeviceBackgroundPort(pluginDataDirectory);
             helper.GetDeviceBackgroundSendPort(pluginDataDirectory);
             helper.GetDeviceMirroringRequested(pluginDataDirectory);
-            var state = helper.CheckForTotalMix();
-            if (state == 2)
+            helper.GetSkipDeviceChecks(pluginDataDirectory);
+            if (Globals.skipChecks == "false")
             {
-                this.OnPluginStatusChanged(Loupedeck.PluginStatus.Normal, "Connected", null, null);
+                var state = helper.CheckForTotalMix();
+                if (state == 2)
+                {
+                    this.OnPluginStatusChanged(Loupedeck.PluginStatus.Normal, "Connected", null, null);
+                }
+                else
+                {
+                    this.OnPluginStatusChanged(Loupedeck.PluginStatus.Error, "TotalMixFX doesn't seem to be running or OSC isn't setup correctly in TotalMixFX for this plugin to work", "https://github.com/shells-dw/loupedeck-totalmix#setup-for-osc", "See github page for instructions on how to set up TotalMix");
+                }
             }
-            else
-            {
-                this.OnPluginStatusChanged(Loupedeck.PluginStatus.Error, "TotalMixFX doesn't seem to be running or OSC isn't setup correctly in TotalMixFX for this plugin to work", "https://github.com/shells-dw/loupedeck-totalmix#setup-for-osc", "See github page for instructions on how to set up TotalMix");
-            }
-
             // filling the Global Dict bankSettings initially
             this.listener.Listen("Input", "/1/busInput", 1).Wait();
             this.listener.Listen("Output", "/1/busOutput", 1).Wait();

@@ -3,7 +3,6 @@
 namespace Loupedeck.TotalMixPlugin
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Loupedeck.TotalMixPlugin.Actions;
 
@@ -14,7 +13,6 @@ namespace Loupedeck.TotalMixPlugin
         readonly String bus = "Output";
         String action;
         private Single valueFloat;
-        private Int32 _toggle = 0;
 
         // build the action
         public OutputChannelAdjustments() : base(displayName: "Output Channel Dials", description: "Options for Output Channels", groupName: "Output Channel Dials", hasReset: false) => this.MakeProfileAction("tree");
@@ -36,11 +34,13 @@ namespace Loupedeck.TotalMixPlugin
         }
         protected override bool OnLoad()
         {
-            _plugin = base.Plugin as TotalMixPlugin;
-            if (_plugin is null)
+            this._plugin = base.Plugin as TotalMixPlugin;
+            if (this._plugin is null)
+            {
                 return false;
+            }
 
-            _plugin.UpdatedOutputSetting += (sender, e) => this.ActionImageChanged(e.Address);
+            this._plugin.UpdatedOutputSetting += (sender, e) => this.ActionImageChanged(e.Address);
             return base.OnLoad();
         }
 

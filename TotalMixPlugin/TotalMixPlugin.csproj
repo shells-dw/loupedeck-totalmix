@@ -88,6 +88,7 @@
     <Compile Include="TotalMixApplication.cs" />
     <Compile Include="TotalMixPlugin.cs" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="settings.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="metadata\LoupedeckPackage.yaml" />

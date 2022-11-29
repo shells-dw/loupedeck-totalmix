@@ -57,11 +57,11 @@ namespace Loupedeck.TotalMixPlugin
         }
         protected override bool OnLoad()
         {
-            _plugin = base.Plugin as TotalMixPlugin;
-            if (_plugin is null)
+            this._plugin = base.Plugin as TotalMixPlugin;
+            if (this._plugin is null)
                 return false;
 
-            _plugin.UpdatedInputSetting += (sender, e) => this.ActionImageChanged(e.Address);
+            this._plugin.UpdatedInputSetting += (sender, e) => this.ActionImageChanged(e.Address);
             return base.OnLoad();
         }
 
@@ -71,20 +71,20 @@ namespace Loupedeck.TotalMixPlugin
             if (actionParameter == "showhideui")
             {
                 Process[] p = Process.GetProcessesByName("TotalMixFX");
-                hWnd = p[0].MainWindowHandle;
+                this.hWnd = p[0].MainWindowHandle;
                 IntPtr WindowHandle = EnumerateProcessWindowHandles(p[0].Id).First();
-                if (hWndCache == IntPtr.Zero)
+                if (this.hWndCache == IntPtr.Zero)
                 {
-                    hWndCache = WindowHandle;
+                    this.hWndCache = WindowHandle;
                 }
-                hWndId = (int)p[0].Id;
-                if (hWnd == (IntPtr)0)
+                this.hWndId = (int)p[0].Id;
+                if (this.hWnd == (IntPtr)0)
                 {
-                    ShowWindowAsync(hWndCache, SW_RESTORE);
+                    ShowWindowAsync(this.hWndCache, SW_RESTORE);
                 }
                 else
                 {
-                    ShowWindowAsync(hWnd, SW_HIDE);
+                    ShowWindowAsync(this.hWnd, SW_HIDE);
                 }
             }
             else
@@ -106,7 +106,7 @@ namespace Loupedeck.TotalMixPlugin
                 HelperFunctions.SendOscCommand($"/1/{actionParameter}", 1);
 
                 // update Global variable
-                Globals.bankSettings[$"Input"][$"/1/{actionParameter}"] = setToStateInt.ToString();
+                Globals.bankSettings[$"Input"][$"/1/{actionParameter}"] = this.setToStateInt.ToString();
 
                 // notify Loupedeck about the change
                 this.ActionImageChanged(actionParameter);

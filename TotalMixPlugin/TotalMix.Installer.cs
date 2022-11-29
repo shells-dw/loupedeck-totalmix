@@ -3,57 +3,112 @@
 namespace Loupedeck.TotalMixPlugin
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
-    using Newtonsoft.Json;
+    using System.Reflection;
+    using System.Runtime.Remoting.Messaging;
 
-    class Device
-    {
-        public String host;
-        public String port;
-        public String sendPort;
-        public String backgroundPort;
-        public String backgroundSendPort;
-        public String mirroringEnabled;
-    }
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+
     public partial class TotalMixPlugin
     {
-        public String ClientConfigurationFilePath => System.IO.Path.Combine(this.GetPluginDataDirectory(), "settings.json");
-
+        String[] expectedSettings = { "host", "port", "sendPort", "backgroundPort", "backgroundSendPort", "mirroringEnabled", "skipChecks" };
         public override Boolean Install()
         {
             // Here we ensure the plugin data directory is there.
-            var pluginDataDirectory = this.GetPluginDataDirectory();
+            var helperFunction = new TotalMixPlugin();
+            var pluginDataDirectory = helperFunction.GetPluginDataDirectory();
             if (!IoHelpers.EnsureDirectoryExists(pluginDataDirectory))
             {
-                Tracer.Error("Plugin data is not created. Cannot continue installation");
                 return false;
             }
 
             // Now we put a template configuration file
-            var filePath = System.IO.Path.Combine(pluginDataDirectory, this.ClientConfigurationFilePath);
+            var filePath = System.IO.Path.Combine(pluginDataDirectory, System.IO.Path.Combine(pluginDataDirectory, "settings.json"));
             if (File.Exists(filePath))
             {
-                return true;
-            }
-            using (var streamWriter = new System.IO.StreamWriter(filePath))
-            {
-                var device = new Device
+                var json = File.ReadAllText(filePath);
+                var jsonObj = JObject.Parse(json);
+                foreach (var setting in this.expectedSettings)
                 {
-                    host = "127.0.0.1",
-                    port = "7001",
-                    sendPort = "9001",
-                    backgroundPort = "7002",
-                    backgroundSendPort = "9002",
-                    mirroringEnabled = "true"
-                };
-
-                var output = JsonConvert.SerializeObject(device, Formatting.Indented);
-                Device deserializedDevice = JsonConvert.DeserializeObject<Device>(output);
-                var serializer = new JsonSerializer();
-                //serialize object directly into file stream
-                serializer.Serialize(streamWriter, deserializedDevice);
+                    if (!jsonObj.ContainsKey(setting))
+                    {
+                        String value = "";
+                        switch (setting)
+                        {
+                            case "host":
+                                value = "127.0.0.1";
+                                break;
+                            case "port":
+                                value = "7001";
+                                break;
+                            case "sendPort":
+                                value = "9001";
+                                break;
+                            case "backgroundPort":
+                                value = "7002";
+                                break;
+                            case "backgroundSendPort":
+                                value = "9002";
+                                break;
+                            case "mirroringEnabled":
+                                value = "true";
+                                break;
+                            case "skipChecks":
+                                value = "false";
+                                break;
+                        }
+                        jsonObj.Add(setting, value);
+                        File.WriteAllText(filePath, jsonObj.ToString());
+                    }
+                }
+                /*     using (StreamReader fileReader = File.OpenText(filePath))
+                     using (JsonTextReader reader = new JsonTextReader(fileReader))
+                     using (StreamWriter fileWriter = File.CreateText(filePath))
+                     using (JsonTextWriter writer = new JsonTextWriter(fileWriter))
+                     {
+                         JObject jObj = (JObject)JToken.ReadFrom(reader);
+                         foreach (var setting in this.expectedSettings)
+                         {
+                             if (!jObj.ContainsKey(setting))
+                             {
+                                 jObj.Add(setting, "false");
+                                 jObj.WriteTo(writer);
+                             }
+                         }
+                     }
+                     return true;
+                 */
             }
+            ResourceReader.CreateFileFromResource("Loupedeck.TotalMixPlugin.settings.json", filePath);
             return true;
+        }
+        public class ResourceReader
+        {
+            // to read the file as a Stream
+            public static Stream GetResourceStream(String resourceName)
+            {
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                Stream resourceStream = assembly.GetManifestResourceStream(resourceName);
+                return resourceStream;
+            }
+
+            // to save the resource to a file
+            public static void CreateFileFromResource(String resourceName, String path)
+            {
+                Stream resourceStream = GetResourceStream(resourceName);
+                if (resourceStream != null)
+                {
+                    using (Stream input = resourceStream)
+                    {
+                        using (Stream output = File.Create(path))
+                        {
+                            input.CopyTo(output);
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Loupedeck.TotalMixPlugin
             Task.Run(() => Sender.Send(address, value, Globals.interfaceIp, Globals.interfaceBackgroundPort)).Wait();
 
             // close the Reciver 
-            Task.Run(() => ListenLoop(bus)).Wait(1000);
+            Task.Run(() => this.ListenLoop(bus)).Wait(1000);
             receiver.Close();
             return Task.CompletedTask;
         }

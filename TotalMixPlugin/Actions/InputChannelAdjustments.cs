@@ -14,13 +14,9 @@ namespace Loupedeck.TotalMixPlugin
         readonly String bus = "Input";
         String action;
         private Single valueFloat;
-        private Int32 _toggle = 0;
 
         // build the action
-        public InputChannelAdjustments() : base(displayName: "Input Channel Dials", description: "Options for Input Channels", groupName: "Input Channel Dials", hasReset: false)
-        {
-            this.MakeProfileAction("tree");
-        }
+        public InputChannelAdjustments() : base(displayName: "Input Channel Dials", description: "Options for Input Channels", groupName: "Input Channel Dials", hasReset: false) => this.MakeProfileAction("tree");
         protected override PluginProfileActionData GetProfileActionData()
         {
             var tree = new PluginProfileActionTree("Select channel and action to trigger");
@@ -40,11 +36,13 @@ namespace Loupedeck.TotalMixPlugin
         }
         protected override bool OnLoad()
         {
-            _plugin = base.Plugin as TotalMixPlugin;
-            if (_plugin is null)
+            this._plugin = base.Plugin as TotalMixPlugin;
+            if (this._plugin is null)
+            {
                 return false;
+            }
 
-            _plugin.UpdatedInputSetting += (sender, e) => this.AdjustmentValueChanged(e.Address);
+            this._plugin.UpdatedInputSetting += (sender, e) => this.AdjustmentValueChanged(e.Address);
             return base.OnLoad();
         }
 
@@ -200,7 +198,7 @@ namespace Loupedeck.TotalMixPlugin
         }
 
         // drawing what is actually shown on the device (overwriting defaults to make it more useful by including channel names and friendly descriptors)
-        protected override BitmapImage GetAdjustmentImage(string actionParameter, PluginImageSize imageSize)
+        protected override BitmapImage GetAdjustmentImage(String actionParameter, PluginImageSize imageSize)
         {
             if (this.Plugin.PluginStatus.Status.ToString() != "Normal")
             {

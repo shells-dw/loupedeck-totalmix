@@ -18,7 +18,7 @@ namespace Loupedeck.TotalMixPlugin
             // Create the receiver
             receiver = new OscReceiver(port);
             receiver.Connect();
-            Task.Run(() => ListenLoop()).Wait(5000);
+            Task.Run(() => this.ListenLoop()).Wait(5000);
             receiver.Close();
           return Task.CompletedTask;
         }

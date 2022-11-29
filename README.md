@@ -1,4 +1,6 @@
+![GitHub](https://img.shields.io/github/license/shells-dw/loupedeck-totalmix)
  ![GitHub last commit](https://img.shields.io/github/last-commit/shells-dw/loupedeck-totalmix)
+  ![GitHub downloads](https://img.shields.io/github/downloads/shells-dw/loupedeck-totalmix/total)
  [![Tip](https://img.shields.io/badge/Donate-PayPal-green.svg)]( https://www.paypal.com/donate?hosted_button_id=8KXD334CCEEC2) / [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Y8Y4CE9LH)
 
 
@@ -46,7 +48,15 @@ MacOS: /Users/USERNAME/.local/share/Loupedeck/PluginData/TotalMix
 contains the file settings.json (which is created with default values during the first start of the plugin and read during every start)
 
 ```json
-{"host":"127.0.0.1","port":"7001","sendPort":"9001","backgroundPort":"7002","backgroundSendPort":"9002","mirroringEnabled":"true"}
+{
+  "host": "127.0.0.1",
+  "port": "7001",
+  "sendPort": "9001",
+  "backgroundPort": "7002",
+  "backgroundSendPort": "9002",
+  "mirroringEnabled": "true",
+  "skipChecks": "false"
+}
 ```
 where you can configure non-default values or the TotalMix connection.
 
@@ -103,6 +113,13 @@ or use Ko-Fi [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi
 
 
 # Changelog
+## [1.1.0] - 2022-11-29
+### Improved
+- settings file checking made more robust (in case settings go missing)
+- setting.json is now sourced from embedded ressources instead of created
+### Added
+- option to skip TotalMix availability check
+
 ## [1.0.0] - 2022-11-18
 ### Added
 Initial release

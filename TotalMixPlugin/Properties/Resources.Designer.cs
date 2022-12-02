@@ -63,6 +63,16 @@ namespace Loupedeck.TotalMixPlugin.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap autoset80 {
+            get {
+                object obj = ResourceManager.GetObject("autoset80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap cueOff80 {
             get {
                 object obj = ResourceManager.GetObject("cueOff80", resourceCulture);
@@ -83,9 +93,9 @@ namespace Loupedeck.TotalMixPlugin.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icon16 {
+        internal static System.Drawing.Bitmap dimOff80 {
             get {
-                object obj = ResourceManager.GetObject("icon16", resourceCulture);
+                object obj = ResourceManager.GetObject("dimOff80", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +103,9 @@ namespace Loupedeck.TotalMixPlugin.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icon256 {
+        internal static System.Drawing.Bitmap dimOn80 {
             get {
-                object obj = ResourceManager.GetObject("icon256", resourceCulture);
+                object obj = ResourceManager.GetObject("dimOn80", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +113,9 @@ namespace Loupedeck.TotalMixPlugin.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icon32 {
+        internal static System.Drawing.Bitmap extInOff80 {
             get {
-                object obj = ResourceManager.GetObject("icon32", resourceCulture);
+                object obj = ResourceManager.GetObject("extInOff80", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,9 +123,39 @@ namespace Loupedeck.TotalMixPlugin.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icon48 {
+        internal static System.Drawing.Bitmap extInOn80 {
             get {
-                object obj = ResourceManager.GetObject("icon48", resourceCulture);
+                object obj = ResourceManager.GetObject("extInOn80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap instrumentOff80 {
+            get {
+                object obj = ResourceManager.GetObject("instrumentOff80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap instrumentOn80 {
+            get {
+                object obj = ResourceManager.GetObject("instrumentOn80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap loopback80 {
+            get {
+                object obj = ResourceManager.GetObject("loopback80", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -153,6 +193,66 @@ namespace Loupedeck.TotalMixPlugin.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap monoOff80 {
+            get {
+                object obj = ResourceManager.GetObject("monoOff80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap monoOn80 {
+            get {
+                object obj = ResourceManager.GetObject("monoOn80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap msProcOff80 {
+            get {
+                object obj = ResourceManager.GetObject("msProcOff80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap msProcOn80 {
+            get {
+                object obj = ResourceManager.GetObject("msProcOn80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap muteFXOff80 {
+            get {
+                object obj = ResourceManager.GetObject("muteFXOff80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap muteFXOn80 {
+            get {
+                object obj = ResourceManager.GetObject("muteFXOn80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap muteOff80 {
             get {
                 object obj = ResourceManager.GetObject("muteOff80", resourceCulture);
@@ -166,6 +266,26 @@ namespace Loupedeck.TotalMixPlugin.Properties {
         internal static System.Drawing.Bitmap muteOn80 {
             get {
                 object obj = ResourceManager.GetObject("muteOn80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap padOff80 {
+            get {
+                object obj = ResourceManager.GetObject("padOff80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap padOn80 {
+            get {
+                object obj = ResourceManager.GetObject("padOn80", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -231,6 +351,16 @@ namespace Loupedeck.TotalMixPlugin.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap recall80 {
+            get {
+                object obj = ResourceManager.GetObject("recall80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
         /// </summary>
         internal static byte[] settings {
@@ -256,6 +386,76 @@ namespace Loupedeck.TotalMixPlugin.Properties {
         internal static System.Drawing.Bitmap soloOn80 {
             get {
                 object obj = ResourceManager.GetObject("soloOn80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap speakerBOff80 {
+            get {
+                object obj = ResourceManager.GetObject("speakerBOff80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap speakerBOn80 {
+            get {
+                object obj = ResourceManager.GetObject("speakerBOn80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap stereo80 {
+            get {
+                object obj = ResourceManager.GetObject("stereo80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap talkbackOff80 {
+            get {
+                object obj = ResourceManager.GetObject("talkbackOff80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap talkbackOn80 {
+            get {
+                object obj = ResourceManager.GetObject("talkbackOn80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap trimOff80 {
+            get {
+                object obj = ResourceManager.GetObject("trimOff80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap trimOn80 {
+            get {
+                object obj = ResourceManager.GetObject("trimOn80", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

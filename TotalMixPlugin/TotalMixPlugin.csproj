@@ -131,7 +131,34 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\autoset80.png" />
+    <EmbeddedResource Include="Resources\dimOff80.png" />
+    <EmbeddedResource Include="Resources\dimOn80.png" />
+    <EmbeddedResource Include="Resources\extInOff80.png" />
+    <EmbeddedResource Include="Resources\extInOn80.png" />
+    <EmbeddedResource Include="Resources\loopback80.png" />
+    <EmbeddedResource Include="Resources\monoOff80.png" />
+    <EmbeddedResource Include="Resources\monoOn80.png" />
+    <EmbeddedResource Include="Resources\muteFXOff80.png" />
+    <EmbeddedResource Include="Resources\muteFXOn80.png" />
+    <EmbeddedResource Include="Resources\recall80.png" />
+    <EmbeddedResource Include="Resources\speakerBOff80.png" />
+    <EmbeddedResource Include="Resources\speakerBOn80.png" />
+    <EmbeddedResource Include="Resources\stereo80.png" />
+    <EmbeddedResource Include="Resources\talkbackOff80.png" />
+    <EmbeddedResource Include="Resources\talkbackOn80.png" />
+    <EmbeddedResource Include="Resources\trimOff80.png" />
+    <EmbeddedResource Include="Resources\trimOn80.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\instrumentOff80.png" />
+    <EmbeddedResource Include="Resources\instrumentOn80.png" />
+    <EmbeddedResource Include="Resources\msProcOff80.png" />
+    <EmbeddedResource Include="Resources\msProcOn80.png" />
+    <EmbeddedResource Include="Resources\padOff80.png" />
+    <EmbeddedResource Include="Resources\padOn80.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent Condition="$(OS) == 'Windows_NT'">call "$(ProjectDir)BuildEvents\postbuild.cmd" "$(ProjectDir)" "$(TargetDir)"</PostBuildEvent>

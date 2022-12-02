@@ -219,16 +219,16 @@ namespace Loupedeck.TotalMixPlugin
                             bitmapBuilder.DrawText($"{trackname}", x: 10, y: 50, width: 60, height: 20, BitmapColor.White, fontSize: 13);
                             break;
                         case "instrument":
-                            bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerNeutral80.png")));
-                            bitmapBuilder.DrawText($"Inst. (Hi-Z)\n{trackname}", x: 10, y: 50, width: 60, height: 20, BitmapColor.White, fontSize: 13);
+                            bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("instrumentOff80.png")));
+                            bitmapBuilder.DrawText($"{trackname}", x: 10, y: 50, width: 60, height: 20, BitmapColor.White, fontSize: 13);
                             break;
                         case "pad":
-                            bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerNeutral80.png")));
-                            bitmapBuilder.DrawText($"Pad\n{trackname}", x: 10, y: 50, width: 60, height: 20, BitmapColor.White, fontSize: 13);
+                            bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("padOff80.png")));
+                            bitmapBuilder.DrawText($"{trackname}", x: 10, y: 50, width: 60, height: 20, BitmapColor.White, fontSize: 13);
                             break;
                         case "msProc":
-                            bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerNeutral80.png")));
-                            bitmapBuilder.DrawText($"M/S Proc\n{trackname}", x: 10, y: 50, width: 60, height: 20, BitmapColor.White, fontSize: 13);
+                            bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("msProcOff80.png")));
+                            bitmapBuilder.DrawText($"{trackname}", x: 10, y: 50, width: 60, height: 20, BitmapColor.White, fontSize: 13);
                             break;
                         default:
                             bitmapBuilder.DrawRectangle(0, 0, 80, 80, BitmapColor.Black);

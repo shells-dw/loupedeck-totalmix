@@ -52,6 +52,7 @@ namespace Loupedeck.TotalMixPlugin
             this.AddParameter("mainMono", "Mono", groupName: "Master Channel");
             this.AddParameter("mainExtIn", "External In", groupName: "Master Channel");
             this.AddParameter("mainTalkback", "Talkback", groupName: "Master Channel");
+            this.AddParameter("trim", "Trim", groupName: "Master Channel");
             this.AddParameter("showhideui", "Show / Hide TotalMixFX Window", groupName: "Master Channel");
 
         }
@@ -155,31 +156,35 @@ namespace Loupedeck.TotalMixPlugin
                         bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("soloOn80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("soloOff80.png")));
                         break;
                     case "mainDim":
-                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerGreen80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerRed80.png")));
+                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("dimOn80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("dimOff80.png")));
                         bitmapBuilder.DrawText("Main Dim", x: 5, y: 40, width: 70, height: 40, fontSize: 15, color: BitmapColor.White);
                         break;
                     case "mainSpeakerB":
-                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerGreen80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerRed80.png")));
+                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("speakerBOn80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("speakerBOff80.png")));
                         bitmapBuilder.DrawText("Speaker B", x: 5, y: 40, width: 70, height: 40, fontSize: 15, color: BitmapColor.White);
                         break;
                     case "mainRecall":
-                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerGreen80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerRed80.png")));
+                        bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("recall80.png")));
                         bitmapBuilder.DrawText("Main Recall", x: 5, y: 40, width: 70, height: 40, fontSize: 15, color: BitmapColor.White);
                         break;
                     case "mainMuteFx":
-                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerGreen80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerRed80.png")));
+                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("muteFXOn80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("muteFXOff80.png")));
                         bitmapBuilder.DrawText("Main Mute FX", x: 5, y: 40, width: 70, height: 40, fontSize: 15, color: BitmapColor.White);
                         break;
                     case "mainMono":
-                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerGreen80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerRed80.png")));
+                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("monoOn80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("monoOff80.png")));
                         bitmapBuilder.DrawText("Main Mono", x: 5, y: 40, width: 70, height: 40, fontSize: 15, color: BitmapColor.White);
                         break;
                     case "mainExtIn":
-                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerGreen80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerRed80.png")));
+                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("extInOn80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("extInOff80.png")));
                         bitmapBuilder.DrawText("Ext. Input", x: 5, y: 40, width: 70, height: 40, fontSize: 15, color: BitmapColor.White);
                         break;
+                    case "trim":
+                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("trimOn80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("trimOff80.png")));
+                        bitmapBuilder.DrawText("Trim", x: 5, y: 40, width: 70, height: 40, fontSize: 15, color: BitmapColor.White);
+                        break;
                     case "mainTalkback":
-                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerGreen80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerRed80.png")));
+                        bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("talkbackOff80.png")));
                         bitmapBuilder.DrawText("Main Talkback", x: 5, y: 40, width: 70, height: 40, fontSize: 15, color: BitmapColor.White);
                         break;
                     case "showhideui":

@@ -14,10 +14,7 @@ namespace Loupedeck.TotalMixPlugin
 
         // build the action
         public MasterVolumeAdjustments()
-            : base(hasReset: false)
-        {
-            this.AddParameter("mastervolume|", "Master Volume", "Master Channel");
-        }
+            : base(hasReset: false) => this.AddParameter("mastervolume|", "Master Volume", "Master Channel");
         protected override bool OnLoad()
         {
             this._plugin = base.Plugin as TotalMixPlugin;

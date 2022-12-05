@@ -3,7 +3,6 @@
 namespace Loupedeck.TotalMixPlugin
 {
     using System;
-    using System.Text;
     using System.Threading.Tasks;
 
     using Loupedeck.TotalMixPlugin.Actions;
@@ -30,8 +29,8 @@ namespace Loupedeck.TotalMixPlugin
             tree.AddLevel("Channel");
             tree.AddLevel("Action");
 
-            // there are 16 channels available (in my RME Interface and any I could get my hands on anyway), so creating 16 Channels with the respective options to select from
-            for (var i = 1; i < 17; i++)
+            // create channels as per how many channels were detected
+            for (var i = 1; i < Globals.channelCount+1; i++)
             {
                 var node = tree.Root.AddNode($"Channel {i}");
                 node.SetPropertyValue("Channel", "Channel {i}");
@@ -85,23 +84,13 @@ namespace Loupedeck.TotalMixPlugin
                         Task.Run(() => HelperFunctions.SendOscCommand($"/1/bus{this.bus}", 1)).GetAwaiter().GetResult();
                         Task.Run(() => HelperFunctions.SendOscCommand($"/1/{this.action}/1/{channel}", this.setToState ? 1 : 0)).GetAwaiter().GetResult();
                     }
-                    // everything else is handled on a sole per-channel-basis, meaning there is no global address, every channel needs to be addressed
-                    // but don't think you could just go ahead and be like "change setting on channel x", nah-ah. without being able to know which channel is currently active, channels have to be switched one by one
-                    // hence I'm making sure during initialization that channel 1 is the channel it always sits on. e.g.: channel 4 phase should be changed means running "/2/track+" 3 times (coming from channel 1), then the value is to be set (hoping we're on the right channel), then track- has to be run 3 times again to leave it at channel 1 for the next change.
-                    // gotta love it.
+                    // everything else is handled on a sole per-channel-basis, meaning there is no global address, every channel needs to be addressed individually
                     else
                     {
                         Task.Run(() => HelperFunctions.SendOscCommand($"/1/bus{this.bus}", 1)).GetAwaiter().GetResult();
-
-                        for (var c = 1; c < Int32.Parse(channel); c++)
-                        {
-                            Task.Run(() => HelperFunctions.SendOscCommand($"/2/track+", 1)).GetAwaiter().GetResult();
-                        }
+                        Task.Run(() => HelperFunctions.SendOscCommand($"/setBankStart", Int32.Parse(channel)-1)).GetAwaiter().GetResult();
                         Task.Run(() => HelperFunctions.SendOscCommand($"/2/{this.action}", 1)).GetAwaiter().GetResult();
-                        for (var c = 1; c < Int32.Parse(channel); c++)
-                        {
-                            Task.Run(() => HelperFunctions.SendOscCommand($"/2/track-", 1)).GetAwaiter().GetResult();
-                        }
+                        Task.Run(() => HelperFunctions.SendOscCommand($"/setBankStart", 0)).GetAwaiter().GetResult();
                     }
                     this.ActionImageChanged(actionParameter); // Notify the Loupedeck service that the actionImage has changed.
                 }

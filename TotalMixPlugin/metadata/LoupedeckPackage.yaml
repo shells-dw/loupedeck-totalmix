@@ -15,7 +15,7 @@ displayName: TotalMix
 pluginFileName: TotalMixPlugin.dll
 
 # Plugin version.
-version: 1.2
+version: 1.4
 
 # Author of the plugin. The author can be a company or an individual developer.
 author: Dominik Werland

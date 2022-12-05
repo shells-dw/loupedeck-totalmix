@@ -15,6 +15,9 @@ namespace Loupedeck.TotalMixPlugin
         // last known device state
         public static Int32 deviceState;
 
+        // channel count
+        public static Int32 channelCount;
+
         // holds the current bus (which might or might not be something that survives the first polish)
         public static String currentBus;
 

@@ -23,8 +23,8 @@ namespace Loupedeck.TotalMixPlugin
             tree.AddLevel("Channel");
             tree.AddLevel("Action");
 
-            // there are 16 channels available (in my RME Interface and any I could get my hands on anyway), so creating 16 Channels with the respective options to select from
-            for (var i = 1; i < 17; i++)
+            // create channels as per how many channels were detected
+            for (var i = 1; i < Globals.channelCount + 1; i++)
             {
                 var node = tree.Root.AddNode($"Channel {i}");
                 node.SetPropertyValue("Channel", "Channel {i}");

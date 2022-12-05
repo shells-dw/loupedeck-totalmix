@@ -114,16 +114,19 @@ namespace Loupedeck.TotalMixPlugin
             this.listener.Listen("Input", "/1/busInput", 1).Wait();
             this.listener.Listen("Output", "/1/busOutput", 1).Wait();
             this.listener.Listen("Playback", "/1/busPlayback", 1).Wait();
+            helper.GetChannelCount();
             if (Globals.mirroringRequested == "true")
             {
                 this._updateThread.Start();
             }
 
             // making sure, we're actually on channel 1 (as further actions rely on it and there is no easy way to figure out which channel is currently active during runtime)
-            for (var c = 1; c < 16; c++)
-            {
-                HelperFunctions.SendOscCommand($"/2/track-", 1);
-            }
+            HelperFunctions.SendOscCommand($"/1/busInput", 1);
+            HelperFunctions.SendOscCommand($"/setBankStart", 0);
+            HelperFunctions.SendOscCommand($"/1/busOutput", 1);
+            HelperFunctions.SendOscCommand($"/setBankStart", 0);
+            HelperFunctions.SendOscCommand($"/1/busPlayback", 1);
+            HelperFunctions.SendOscCommand($"/setBankStart", 0);
         }
         // This method is called when the plugin is unloaded during the Loupedeck service shutdown.
         public override void Unload() => this._updateThread.Interrupt();

@@ -27,7 +27,7 @@ This plugin uses 2 of them, 1 and 2. 1 is used for the main actions, 2 is used f
 
 Note: on MacOS, you'll have to enter "127.0.0.1" in the Remote Controller Address textbox, otherwise it will not work.
 
-- Please also set the "Number of faders per bank" to 16, or it will not fully work.
+- In the bottom, set the "Number of faders per bank" setting to reflect the amount of channels your interface offers (the plugin will offer channels based on that value).
 - Then, do the same for Remote Controller 2. It will default to 7002 and 9002.
 
 If you (have to) change these ports, make sure updating them in the plugin config as well!
@@ -111,6 +111,12 @@ or use Ko-Fi [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi
 
 
 # Changelog
+## [1.4.0] - 2022-12-05
+### Improved
+- switch to track optimised (less calls)
+## [1.3.0] - 2022-12-03
+### Added
+- auto channel count recognition
 ## [1.2.0] - 2022-12-02
 ### Added
 - multiple action images

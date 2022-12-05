@@ -7,6 +7,7 @@ namespace Loupedeck.TotalMixPlugin.Actions
     using Newtonsoft.Json;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using System.Linq;
 
     internal class HelperFunctions
     {
@@ -139,6 +140,17 @@ namespace Loupedeck.TotalMixPlugin.Actions
                 return "false";
             }
         }
+        public void GetChannelCount()
+        {
+            try
+            {
+                Globals.channelCount = Globals.bankSettings["Input"].Where(d => d.Key.Contains("/1/pan")).ToDictionary(d => d.Key, d => d.Value).Count;
+            } catch
+            {
+                Globals.channelCount = 16;
+            }
+        }
+
         // here the magic happens (imagine the sparkles and rainbows yourself) - kidding, just taking the address and value from the call, combining it with the Global variables and send that all to the interface
         public static void SendOscCommand(String name, Single value)
         {

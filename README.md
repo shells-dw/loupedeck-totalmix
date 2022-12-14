@@ -111,6 +111,13 @@ or use Ko-Fi [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi
 
 
 # Changelog
+## [1.5.0] - 2022-12-14
+### Added
+- Custom Snapshot/Mix names are now read from local TotalMix config file (as they are not available via OSC) and shown during selection as well as on the action
+### Improved
+- Removed option to show/hide TotalMix UI on MacOS to avoid confusion for MacOS users (currently Win only function, MacOS TODO)
+- Call sender improved (avoid unnecessary function call)
+- Extended idle period between listenthread runs (should be a bit easier on the system without making things lots slower)
 ## [1.4.0] - 2022-12-05
 ### Improved
 - switch to track optimised (less calls)

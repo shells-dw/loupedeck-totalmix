@@ -40,6 +40,10 @@ namespace Loupedeck.TotalMixPlugin
                 node.AddItem($"phaseRight|{i}", "Phase Right", "(on stereo channels only)");
                 node.AddItem($"pad|{i}", "Pad");
                 node.AddItem($"msProc|{i}", "Mid/Side Processing");
+                node.AddItem($"lowcutEnable|{i}", "Enable Lowcut");
+                node.AddItem($"eqEnable|{i}", "Enable EQ");
+                node.AddItem($"compexpEnable|{i}", "Enable Compressor/Extender");
+                node.AddItem($"alevEnable|{i}", "Enable Autolevel");
             }
             return tree;
         }
@@ -70,17 +74,17 @@ namespace Loupedeck.TotalMixPlugin
                         Int32 setToStateInt = Convert.ToInt32(this.setToState);
                         Globals.bankSettings[$"{this.bus}"][$"/1/{this.action}/1/{channel}"] = setToStateInt.ToString();
 
-                        Task.Run(() => HelperFunctions.SendOscCommand($"/1/bus{this.bus}", 1)).GetAwaiter().GetResult();
-                        Task.Run(() => HelperFunctions.SendOscCommand($"/1/{this.action}/1/{channel}", this.setToState ? 1 : 0)).GetAwaiter().GetResult();
+                        Sender.Send($"/1/bus{this.bus}", 1, Globals.interfaceIp, Globals.interfacePort);
+                        Sender.Send($"/1/{this.action}/1/{channel}", this.setToState ? 1 : 0, Globals.interfaceIp, Globals.interfacePort);
                     }
 
                     // everything else is handled on a sole per-channel-basis, meaning there is no global address, every channel needs to be addressed individually
                     else
                     {
-                        Task.Run(() => HelperFunctions.SendOscCommand($"/1/bus{this.bus}", 1)).GetAwaiter().GetResult();
-                        Task.Run(() => HelperFunctions.SendOscCommand($"/setBankStart", Int32.Parse(channel) - 1)).GetAwaiter().GetResult();
-                        Task.Run(() => HelperFunctions.SendOscCommand($"/2/{this.action}", 1)).GetAwaiter().GetResult();
-                        Task.Run(() => HelperFunctions.SendOscCommand($"/setBankStart", 0)).GetAwaiter().GetResult();
+                        Sender.Send($"/1/bus{this.bus}", 1, Globals.interfaceIp, Globals.interfacePort);
+                        Sender.Send($"/setBankStart", Int32.Parse(channel) - 1, Globals.interfaceIp, Globals.interfacePort);
+                        Sender.Send($"/2/{this.action}", 1, Globals.interfaceIp, Globals.interfacePort);
+                        Sender.Send($"/setBankStart", 0, Globals.interfaceIp, Globals.interfacePort);
                     }
                     // notify the Loupedeck there was an update
                     this.ActionImageChanged(actionParameter);
@@ -219,6 +223,22 @@ namespace Loupedeck.TotalMixPlugin
                         case "msProc":
                             bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("msProcOff80.png")));
                             bitmapBuilder.DrawText($"{trackname}", x: 10, y: 50, width: 60, height: 20, BitmapColor.White, fontSize: 13);
+                            break;
+                        case "lowcutEnable":
+                            bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerNeutral80.png")));
+                            bitmapBuilder.DrawText($"Lowcut\n{trackname}", x: 10, y: 50, width: 60, height: 20, BitmapColor.White, fontSize: 13);
+                            break;
+                        case "eqEnable":
+                            bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerNeutral80.png")));
+                            bitmapBuilder.DrawText($"EQ\n{trackname}", x: 10, y: 50, width: 60, height: 20, BitmapColor.White, fontSize: 13);
+                            break;
+                        case "compexpEnable":
+                            bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerNeutral80.png")));
+                            bitmapBuilder.DrawText($"Comp/Exp\n{trackname}", x: 10, y: 50, width: 60, height: 20, BitmapColor.White, fontSize: 13);
+                            break;
+                        case "alevEnable":
+                            bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerNeutral80.png")));
+                            bitmapBuilder.DrawText($"Autolevel\n{trackname}", x: 10, y: 50, width: 60, height: 20, BitmapColor.White, fontSize: 13);
                             break;
                         default:
                             bitmapBuilder.DrawRectangle(0, 0, 80, 80, BitmapColor.Black);

@@ -151,12 +151,6 @@ namespace Loupedeck.TotalMixPlugin.Actions
             }
         }
 
-        // here the magic happens (imagine the sparkles and rainbows yourself) - kidding, just taking the address and value from the call, combining it with the Global variables and send that all to the interface
-        public static void SendOscCommand(String name, Single value)
-        {
-            Sender.Send(name, value, Globals.interfaceIp, Globals.interfacePort);
-        }
-
         // needed that for something... hmm
         public class SelectableEnumItem
         {

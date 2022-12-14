@@ -84,8 +84,8 @@ namespace Loupedeck.TotalMixPlugin
                     Globals.bankSettings[$"{this.bus}"][$"/1/{this.action}{channel}"] = this.valueFloat.ToString();
 
                     // make it s0
-                    Task.Run(() => HelperFunctions.SendOscCommand($"/1/bus{this.bus}", 1));
-                    Task.Run(() => HelperFunctions.SendOscCommand($"/1/{this.action}{channel}", this.valueFloat));
+                    Sender.Send($"/1/bus{this.bus}", 1, Globals.interfaceIp, Globals.interfacePort);
+                    Sender.Send($"/1/{this.action}{channel}", this.valueFloat, Globals.interfaceIp, Globals.interfacePort);
                     this.ActionImageChanged(actionParameter); // Notify the Loupedeck service that the adjustment image has changed.
                     this.AdjustmentValueChanged(actionParameter); // Notify the Loupedeck service that the adjustment value has changed.
                 }

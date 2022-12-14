@@ -49,7 +49,7 @@ namespace Loupedeck.TotalMixPlugin
                 {
                     //
                 }
-                System.Threading.Thread.Sleep(50);
+                System.Threading.Thread.Sleep(250);
             }
         }
 
@@ -121,12 +121,12 @@ namespace Loupedeck.TotalMixPlugin
             }
 
             // making sure, we're actually on channel 1 (as further actions rely on it and there is no easy way to figure out which channel is currently active during runtime)
-            HelperFunctions.SendOscCommand($"/1/busInput", 1);
-            HelperFunctions.SendOscCommand($"/setBankStart", 0);
-            HelperFunctions.SendOscCommand($"/1/busOutput", 1);
-            HelperFunctions.SendOscCommand($"/setBankStart", 0);
-            HelperFunctions.SendOscCommand($"/1/busPlayback", 1);
-            HelperFunctions.SendOscCommand($"/setBankStart", 0);
+            Sender.Send($"/1/busInput", 1, Globals.interfaceIp, Globals.interfacePort);
+            Sender.Send($"/setBankStart", 0, Globals.interfaceIp, Globals.interfacePort);
+            Sender.Send($"/1/busOutput", 1, Globals.interfaceIp, Globals.interfacePort);
+            Sender.Send($"/setBankStart", 0, Globals.interfaceIp, Globals.interfacePort);
+            Sender.Send($"/1/busPlayback", 1, Globals.interfaceIp, Globals.interfacePort);
+            Sender.Send($"/setBankStart", 0, Globals.interfaceIp, Globals.interfacePort);
         }
         // This method is called when the plugin is unloaded during the Loupedeck service shutdown.
         public override void Unload() => this._updateThread.Interrupt();

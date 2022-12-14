@@ -40,7 +40,7 @@ namespace Loupedeck.TotalMixPlugin
                 this.valueFloat = (Single)Math.Max(0.0, (Single)Math.Min(1.0, this.valueFloat));
                 Globals.bankSettings["Input"]["/1/mastervolume"] = this.valueFloat.ToString();
                 // make it so
-                Task.Run(() => HelperFunctions.SendOscCommand($"/1/mastervolume", this.valueFloat));
+                Sender.Send($"/1/mastervolume", this.valueFloat, Globals.interfaceIp, Globals.interfacePort);
                 this.AdjustmentValueChanged(actionParameter); // Notify the Loupedeck service that the adjustment value has changed.
             } catch
             {

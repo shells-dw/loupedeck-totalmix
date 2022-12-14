@@ -7,7 +7,6 @@ namespace Loupedeck.TotalMixPlugin
     using System.Diagnostics;
     using System.Linq;
     using System.Runtime.InteropServices;
-    using Loupedeck.TotalMixPlugin.Actions;
 
     public class MainsTrigger : PluginDynamicCommand
     {
@@ -17,25 +16,27 @@ namespace Loupedeck.TotalMixPlugin
         private Boolean setToState;
         private Int32 setToStateInt;
         [DllImport("user32.dll")]
-        public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
-        private const int SW_HIDE = 0;
-        private const int SW_RESTORE = 5;
+        public static extern Boolean ShowWindowAsync(IntPtr hWnd, Int32 nCmdShow);
+        private const Int32 SW_HIDE = 0;
+        private const Int32 SW_RESTORE = 5;
         private IntPtr hWnd;
         private IntPtr hWndCache;
-        private int hWndId;
-        delegate bool EnumThreadDelegate(IntPtr hWnd, IntPtr lParam);
+        private Int32 hWndId;
+        delegate Boolean EnumThreadDelegate(IntPtr hWnd, IntPtr lParam);
 
         [DllImport("user32.dll")]
-        static extern bool EnumThreadWindows(int dwThreadId, EnumThreadDelegate lpfn,
+        static extern Boolean EnumThreadWindows(Int32 dwThreadId, EnumThreadDelegate lpfn,
             IntPtr lParam);
 
-        static IEnumerable<IntPtr> EnumerateProcessWindowHandles(int processId)
+        static IEnumerable<IntPtr> EnumerateProcessWindowHandles(Int32 processId)
         {
             var handles = new List<IntPtr>();
 
             foreach (ProcessThread thread in Process.GetProcessById(processId).Threads)
+            {
                 EnumThreadWindows(thread.Id,
                     (hWnd, lParam) => { handles.Add(hWnd); return true; }, IntPtr.Zero);
+            }
 
             return handles;
         }
@@ -53,14 +54,19 @@ namespace Loupedeck.TotalMixPlugin
             this.AddParameter("mainExtIn", "External In", groupName: "Master Channel");
             this.AddParameter("mainTalkback", "Talkback", groupName: "Master Channel");
             this.AddParameter("trim", "Trim", groupName: "Master Channel");
-            this.AddParameter("showhideui", "Show / Hide TotalMixFX Window", groupName: "Master Channel");
+            if (Helpers.IsWindows())
+            { 
+                this.AddParameter("showhideui", "Show / Hide TotalMixFX Window", groupName: "Master Channel");
+            }
 
         }
-        protected override bool OnLoad()
+        protected override Boolean OnLoad()
         {
             this._plugin = base.Plugin as TotalMixPlugin;
             if (this._plugin is null)
+            {
                 return false;
+            }
 
             this._plugin.UpdatedInputSetting += (sender, e) => this.ActionImageChanged(e.Address);
             return base.OnLoad();
@@ -78,7 +84,7 @@ namespace Loupedeck.TotalMixPlugin
                 {
                     this.hWndCache = WindowHandle;
                 }
-                this.hWndId = (int)p[0].Id;
+                this.hWndId = (Int32)p[0].Id;
                 if (this.hWnd == (IntPtr)0)
                 {
                     ShowWindowAsync(this.hWndCache, SW_RESTORE);
@@ -104,7 +110,7 @@ namespace Loupedeck.TotalMixPlugin
                 this.setToStateInt = Convert.ToInt32(this.setToState);
 
                 // send to TotalMix
-                HelperFunctions.SendOscCommand($"/1/{actionParameter}", 1);
+                Sender.Send($"/1/{actionParameter}", 1, Globals.interfaceIp, Globals.interfacePort);
 
                 // update Global variable
                 Globals.bankSettings[$"Input"][$"/1/{actionParameter}"] = this.setToStateInt.ToString();

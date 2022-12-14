@@ -3,6 +3,7 @@
 namespace Loupedeck.TotalMixPlugin
 {
     using Rug.Osc;
+
     using System;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
@@ -24,7 +25,7 @@ namespace Loupedeck.TotalMixPlugin
             receiver.Connect();
 
             // Start the listen thread
-            Task.Run(() => Sender.Send(address, value, Globals.interfaceIp, Globals.interfaceBackgroundPort)).Wait();
+            Sender.Send(address, value, Globals.interfaceIp, Globals.interfaceBackgroundPort).Wait();
 
             // close the Reciver 
             Task.Run(() => this.ListenLoop(bus)).Wait(1000);
@@ -53,7 +54,7 @@ namespace Loupedeck.TotalMixPlugin
                         // get the next message 
                         // this will block until one arrives or the socket is closed
                         OscPacket packet = receiver.Receive();
-                        
+
                         // we're expecting only bundles at this time, so define the received packet as bundle
                         OscBundle bundle = packet as OscBundle;
 
@@ -68,38 +69,42 @@ namespace Loupedeck.TotalMixPlugin
                             // add every received bundle to the Global Dict
                             for (var i = 0; i < bundle.Count; i++)
                             {
-                                if (Globals.bankSettings[$"{bus}"].ContainsKey(((Rug.Osc.OscMessage)bundle[i]).Address))
+                                Match uninterestingValues = Regex.Match(((Rug.Osc.OscMessage)bundle[i]).Address.ToString(), "^.{3}(?>label|select)");
+                                if (uninterestingValues.Success == false)
                                 {
-                                    Match theTriggerMatch = Regex.Match(((Rug.Osc.OscMessage)bundle[i]).Address.ToString(), "^\\/1\\/(mute|solo|phantom|pan|micgain)(\\/1\\/)?(\\d)$");
-                                    if (theTriggerMatch.Success == true)
+                                    if (Globals.bankSettings[$"{bus}"].ContainsKey(((Rug.Osc.OscMessage)bundle[i]).Address))
                                     {
-                                        Globals.bankSettings[$"{bus}"].TryGetValue($"/1/{theTriggerMatch.Groups[1].Value}{theTriggerMatch.Groups[2].Value}{theTriggerMatch.Groups[3].Value}", out var value);
-                                        if (value != ((Rug.Osc.OscMessage)bundle[i])[0].ToString())
+                                        Match theTriggerMatch = Regex.Match(((Rug.Osc.OscMessage)bundle[i]).Address.ToString(), "^\\/1\\/(mute|solo|phantom|pan|micgain)(\\/1\\/)?(\\d)$");
+                                        if (theTriggerMatch.Success == true)
                                         {
-                                            Globals.recentUpdates[$"{bus}"][theTriggerMatch.Groups[1].Value] = theTriggerMatch.Groups[3].Value;
+                                            Globals.bankSettings[$"{bus}"].TryGetValue($"/1/{theTriggerMatch.Groups[1].Value}{theTriggerMatch.Groups[2].Value}{theTriggerMatch.Groups[3].Value}", out var value);
+                                            if (value != ((Rug.Osc.OscMessage)bundle[i])[0].ToString())
+                                            {
+                                                Globals.recentUpdates[$"{bus}"][theTriggerMatch.Groups[1].Value] = theTriggerMatch.Groups[3].Value;
+                                            }
                                         }
-                                    }
-                                    Match theAdjustmentMatch = Regex.Match(((Rug.Osc.OscMessage)bundle[i]).Address.ToString(), "^\\/1\\/(volume|mastervolume)(\\d)?Val$");
-                                    if (theAdjustmentMatch.Success == true)
-                                    {
+                                        Match theAdjustmentMatch = Regex.Match(((Rug.Osc.OscMessage)bundle[i]).Address.ToString(), "^\\/1\\/(volume|mastervolume)(\\d)?Val$");
+                                        if (theAdjustmentMatch.Success == true)
+                                        {
                                             Globals.bankSettings[$"{bus}"].TryGetValue($"/1/{theAdjustmentMatch.Groups[1].Value}{theAdjustmentMatch.Groups[2].Value}Val", out var value);
                                             if (value != ((Rug.Osc.OscMessage)bundle[i])[0].ToString())
                                             {
                                                 Globals.recentUpdates[$"{bus}"][theAdjustmentMatch.Groups[1].Value] = "1";
                                             }
-                                    }
-                                    Match theMainMatch = Regex.Match(((Rug.Osc.OscMessage)bundle[i]).Address.ToString(), "^\\/1\\/(main.*|global.{4})$");
-                                    if (theMainMatch.Success == true)
-                                    {
-                                        Globals.bankSettings[$"{bus}"].TryGetValue($"/1/{theMainMatch.Groups[1].Value}", out var value);
-                                        if (value != ((Rug.Osc.OscMessage)bundle[i])[0].ToString())
-                                        {
-                                            Globals.recentUpdates[$"{bus}"][theMainMatch.Groups[1].Value] = "";
                                         }
+                                        Match theMainMatch = Regex.Match(((Rug.Osc.OscMessage)bundle[i]).Address.ToString(), "^\\/1\\/(main.*|global.{4})$");
+                                        if (theMainMatch.Success == true)
+                                        {
+                                            Globals.bankSettings[$"{bus}"].TryGetValue($"/1/{theMainMatch.Groups[1].Value}", out var value);
+                                            if (value != ((Rug.Osc.OscMessage)bundle[i])[0].ToString())
+                                            {
+                                                Globals.recentUpdates[$"{bus}"][theMainMatch.Groups[1].Value] = "";
+                                            }
+                                        }
+                                        Globals.bankSettings[$"{bus}"].Remove(((Rug.Osc.OscMessage)bundle[i]).Address);
                                     }
-                                    Globals.bankSettings[$"{bus}"].Remove(((Rug.Osc.OscMessage)bundle[i]).Address);
+                                    Globals.bankSettings[$"{bus}"].Add(((Rug.Osc.OscMessage)bundle[i]).Address, ((Rug.Osc.OscMessage)bundle[i])[0].ToString());
                                 }
-                                Globals.bankSettings[$"{bus}"].Add(((Rug.Osc.OscMessage)bundle[i]).Address, ((Rug.Osc.OscMessage)bundle[i])[0].ToString());
                             }
 
                             // matched

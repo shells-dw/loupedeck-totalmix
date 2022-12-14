@@ -1,12 +1,11 @@
 ﻿// OSC Sender
 
-using Rug.Osc;
-using System;
-using System.Net;
-using System.Threading.Tasks;
-
 namespace Loupedeck.TotalMixPlugin
 {
+    using Rug.Osc;
+    using System;
+    using System.Net;
+    using System.Threading.Tasks;
     internal class Sender
     {
         public static Task Send(String name, Single value, String ip, Int32 port)

@@ -111,6 +111,9 @@ or use Ko-Fi [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi
 
 
 # Changelog
+## [1.6.1] - 2022-12-18
+### Fixed
+- Master Volume value not updating correctly. Note: removing and replacing the Master Volume dial on the Loupedeck is required to apply the change.
 ## [1.6.0] - 2022-12-18
 ### Added
 - Option to enable/disable Reverb and Echo

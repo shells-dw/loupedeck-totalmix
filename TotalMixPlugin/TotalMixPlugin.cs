@@ -38,11 +38,6 @@ namespace Loupedeck.TotalMixPlugin
             {
                 try
                 {
-                    this.listener.Listen("global", $"/3", 1).Wait();
-                    for (Int32 i = 0; i < Globals.recentUpdates["global"].Count; i++)
-                    {
-                        this.FireEvent("global", i);
-                    }
                     String[] busses = { "Input", "Output", "Playback" };
                     foreach (var bus in busses)
                     {
@@ -52,6 +47,11 @@ namespace Loupedeck.TotalMixPlugin
                         {
                             this.FireEvent(bus, i);
                         }
+                    }
+                    this.listener.Listen("global", $"/3", 1).Wait();
+                    for (Int32 i = 0; i < Globals.recentUpdates["global"].Count; i++)
+                    {
+                        this.FireEvent("global", i);
                     }
                 }
                 catch
@@ -71,6 +71,11 @@ namespace Loupedeck.TotalMixPlugin
             if (bus == "Input")
             {
                 if (Globals.recentUpdates[bus].ElementAt(index).Key.Contains("main"))
+                {
+                    var TotalMixUpdatedEventArgsGlobal = new TotalMixUpdatedSetting($"{Globals.recentUpdates[bus].ElementAt(index).Key}");
+                    UpdatedInputSetting?.Invoke(this, TotalMixUpdatedEventArgsGlobal);
+                }
+                if (Globals.recentUpdates[bus].ElementAt(index).Key.Contains("master"))
                 {
                     var TotalMixUpdatedEventArgsGlobal = new TotalMixUpdatedSetting($"{Globals.recentUpdates[bus].ElementAt(index).Key}");
                     UpdatedInputSetting?.Invoke(this, TotalMixUpdatedEventArgsGlobal);
@@ -132,10 +137,10 @@ namespace Loupedeck.TotalMixPlugin
             if (Globals.skipChecks == "true" || this.totalMixAvailable)
             {
                 // filling the Global Dict bankSettings initially
-                this.listener.Listen("global", $"/3", 1).Wait();
                 this.listener.Listen("Input", "/1/busInput", 1).Wait();
                 this.listener.Listen("Output", "/1/busOutput", 1).Wait();
                 this.listener.Listen("Playback", "/1/busPlayback", 1).Wait();
+                this.listener.Listen("global", $"/3", 1).Wait();
                 helper.GetChannelCount();
                 // making sure, we're actually on channel 1 (as further actions rely on it and there is no easy way to figure out which channel is currently active during runtime)
                 String[] busses = { "Input", "Output", "Playback" };

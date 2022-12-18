@@ -59,7 +59,7 @@ namespace Loupedeck.TotalMixPlugin
                         OscBundle bundle = packet as OscBundle;
 
                         // abort condition RegEx - the device sends a heartbeat of sorts ("/") every second
-                        String snapRegEx = @"^\/$";
+                        String snapRegEx = @"^\/$|^\/3\/recordRecordStart$";
                         var r = new Regex(snapRegEx, RegexOptions.IgnoreCase);
                         if (bundle != null)
                         {
@@ -92,13 +92,22 @@ namespace Loupedeck.TotalMixPlugin
                                                 Globals.recentUpdates[$"{bus}"][theAdjustmentMatch.Groups[1].Value] = "1";
                                             }
                                         }
-                                        Match theMainMatch = Regex.Match(((Rug.Osc.OscMessage)bundle[i]).Address.ToString(), "^\\/1\\/(main.*|global.{4})$");
+                                        Match theMainMatch = Regex.Match(((Rug.Osc.OscMessage)bundle[i]).Address.ToString(), "^\\/1\\/(main.*)$");
                                         if (theMainMatch.Success == true)
                                         {
                                             Globals.bankSettings[$"{bus}"].TryGetValue($"/1/{theMainMatch.Groups[1].Value}", out var value);
                                             if (value != ((Rug.Osc.OscMessage)bundle[i])[0].ToString())
                                             {
                                                 Globals.recentUpdates[$"{bus}"][theMainMatch.Groups[1].Value] = "";
+                                            }
+                                        }
+                                        Match theGlobalMatch = Regex.Match(((Rug.Osc.OscMessage)bundle[i]).Address.ToString(), "^\\/3\\/(global(?:Mute|Solo)|reverbEnable|echoEnable)$");
+                                        if (theGlobalMatch.Success == true)
+                                        {
+                                            Globals.bankSettings[$"{bus}"].TryGetValue($"/3/{theGlobalMatch.Groups[1].Value}", out var value);
+                                            if (value != ((Rug.Osc.OscMessage)bundle[i])[0].ToString())
+                                            {
+                                                Globals.recentUpdates[$"{bus}"][theGlobalMatch.Groups[1].Value] = "";
                                             }
                                         }
                                         Globals.bankSettings[$"{bus}"].Remove(((Rug.Osc.OscMessage)bundle[i]).Address);

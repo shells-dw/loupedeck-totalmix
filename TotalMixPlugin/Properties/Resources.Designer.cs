@@ -113,6 +113,26 @@ namespace Loupedeck.TotalMixPlugin.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap echoOff80 {
+            get {
+                object obj = ResourceManager.GetObject("echoOff80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap echoOn80 {
+            get {
+                object obj = ResourceManager.GetObject("echoOn80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap extInOff80 {
             get {
                 object obj = ResourceManager.GetObject("extInOff80", resourceCulture);
@@ -356,6 +376,26 @@ namespace Loupedeck.TotalMixPlugin.Properties {
         internal static System.Drawing.Bitmap recall80 {
             get {
                 object obj = ResourceManager.GetObject("recall80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap reverbOff80 {
+            get {
+                object obj = ResourceManager.GetObject("reverbOff80", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap reverbOn80 {
+            get {
+                object obj = ResourceManager.GetObject("reverbOn80", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

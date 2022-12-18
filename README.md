@@ -111,6 +111,15 @@ or use Ko-Fi [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi
 
 
 # Changelog
+## [1.6.0] - 2022-12-18
+### Added
+- Option to enable/disable Reverb and Echo
+### Improved / fixed
+- If TotalMix isn't sending heartbeats, don't try to listen for it. 
+### Note
+- Global Mute and Global Solo have been moved to new "Global Functions" folder. Existing buttons need to be replaced.
+### Misc
+- New plugin icon ;)
 ## [1.5.0] - 2022-12-14
 ### Added
 - Custom Snapshot/Mix names are now read from local TotalMix config file (as they are not available via OSC) and shown during selection as well as on the action

@@ -9,13 +9,13 @@ type: plugin4
 name: TotalMix
 
 # Name that is displayed in the Loupedeck configuration application.
-displayName: TotalMix
+displayName: "TotalMix FX"
 
 # Name of the plugin library file.
 pluginFileName: TotalMixPlugin.dll
 
 # Plugin version.
-version: 1.5
+version: 1.6
 
 # Author of the plugin. The author can be a company or an individual developer.
 author: Dominik Werland

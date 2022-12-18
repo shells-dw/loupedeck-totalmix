@@ -36,7 +36,7 @@ namespace Loupedeck.TotalMixPlugin
                         OscBundle bundle = packet as OscBundle;
 
                         // abort condition RegEx - the device sends a heartbeat of sorts ("/") every second
-                        String snapRegEx = @"^\/$";
+                        String snapRegEx = @"^\/$|^\/3\/recordRecordStart$";
                         var r = new Regex(snapRegEx, RegexOptions.IgnoreCase);
                         if (bundle != null)
                         {

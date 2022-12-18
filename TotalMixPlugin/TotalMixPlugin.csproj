@@ -62,6 +62,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\FX.cs" />
     <Compile Include="Models\HelperFunctions.cs" />
     <Compile Include="Actions\PlaybackChannelAdjustments.cs" />
     <Compile Include="Actions\OutputChannelAdjustments.cs" />
@@ -158,6 +159,18 @@
     <EmbeddedResource Include="Resources\msProcOn80.png" />
     <EmbeddedResource Include="Resources\padOff80.png" />
     <EmbeddedResource Include="Resources\padOn80.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\echoOff80.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\echoOn80.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\reverbOff80.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\reverbOn80.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

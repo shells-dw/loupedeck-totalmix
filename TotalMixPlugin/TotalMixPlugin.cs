@@ -5,6 +5,7 @@ namespace Loupedeck.TotalMixPlugin
     using System;
     using System.Linq;
     using System.Threading;
+    using System.Threading.Tasks;
 
     using Loupedeck.TotalMixPlugin.Actions;
     using Loupedeck.TotalMixPlugin.Models.Events;
@@ -14,10 +15,13 @@ namespace Loupedeck.TotalMixPlugin
     public partial class TotalMixPlugin : Plugin
     {
 
+        private Boolean cancelThread;
+        private Boolean totalMixAvailable;
         private readonly Thread _updateThread;
         public event EventHandler<TotalMixUpdatedSetting> UpdatedInputSetting;
         public event EventHandler<TotalMixUpdatedSetting> UpdatedOutputSetting;
         public event EventHandler<TotalMixUpdatedSetting> UpdatedPlaybackSetting;
+        public event EventHandler<TotalMixUpdatedSetting> UpdatedGlobalSetting;
         readonly Listener listener = new Listener();
 
         // Gets a value indicating whether this is an Universal plugin or an Application plugin.
@@ -34,6 +38,11 @@ namespace Loupedeck.TotalMixPlugin
             {
                 try
                 {
+                    this.listener.Listen("global", $"/3", 1).Wait();
+                    for (Int32 i = 0; i < Globals.recentUpdates["global"].Count; i++)
+                    {
+                        this.FireEvent("global", i);
+                    }
                     String[] busses = { "Input", "Output", "Playback" };
                     foreach (var bus in busses)
                     {
@@ -49,7 +58,11 @@ namespace Loupedeck.TotalMixPlugin
                 {
                     //
                 }
-                System.Threading.Thread.Sleep(250);
+                if (this.cancelThread)
+                {
+                    break;
+                }
+                Task.Delay(100).Wait();
             }
         }
 
@@ -57,7 +70,7 @@ namespace Loupedeck.TotalMixPlugin
         {
             if (bus == "Input")
             {
-                if (Globals.recentUpdates[bus].ElementAt(index).Key.Contains("main") || Globals.recentUpdates[bus].ElementAt(index).Key.Contains("global"))
+                if (Globals.recentUpdates[bus].ElementAt(index).Key.Contains("main"))
                 {
                     var TotalMixUpdatedEventArgsGlobal = new TotalMixUpdatedSetting($"{Globals.recentUpdates[bus].ElementAt(index).Key}");
                     UpdatedInputSetting?.Invoke(this, TotalMixUpdatedEventArgsGlobal);
@@ -77,6 +90,11 @@ namespace Loupedeck.TotalMixPlugin
             {
                 var TotalMixUpdatedEventArgs = new TotalMixUpdatedSetting($"{Globals.recentUpdates[bus].ElementAt(index).Key}|{Globals.recentUpdates[bus].ElementAt(index).Value}");
                 UpdatedPlaybackSetting?.Invoke(this, TotalMixUpdatedEventArgs);
+            }
+            if (bus == "global")
+            {
+                var TotalMixUpdatedEventArgs = new TotalMixUpdatedSetting($"{Globals.recentUpdates[bus].ElementAt(index).Key}");
+                UpdatedGlobalSetting?.Invoke(this, TotalMixUpdatedEventArgs);
             }
             Globals.recentUpdates[bus].Remove(Globals.recentUpdates[bus].ElementAt(index).Key);
         }
@@ -104,32 +122,36 @@ namespace Loupedeck.TotalMixPlugin
                 if (state == 2)
                 {
                     this.OnPluginStatusChanged(Loupedeck.PluginStatus.Normal, "Connected", null, null);
+                    this.totalMixAvailable = true;
                 }
                 else
                 {
                     this.OnPluginStatusChanged(Loupedeck.PluginStatus.Error, "TotalMixFX doesn't seem to be running or OSC isn't setup correctly in TotalMixFX for this plugin to work", "https://github.com/shells-dw/loupedeck-totalmix#setup-for-osc", "See github page for instructions on how to set up TotalMix");
                 }
             }
-            // filling the Global Dict bankSettings initially
-            this.listener.Listen("Input", "/1/busInput", 1).Wait();
-            this.listener.Listen("Output", "/1/busOutput", 1).Wait();
-            this.listener.Listen("Playback", "/1/busPlayback", 1).Wait();
-            helper.GetChannelCount();
-            if (Globals.mirroringRequested == "true")
+            if (Globals.skipChecks == "true" || this.totalMixAvailable)
             {
-                this._updateThread.Start();
+                // filling the Global Dict bankSettings initially
+                this.listener.Listen("global", $"/3", 1).Wait();
+                this.listener.Listen("Input", "/1/busInput", 1).Wait();
+                this.listener.Listen("Output", "/1/busOutput", 1).Wait();
+                this.listener.Listen("Playback", "/1/busPlayback", 1).Wait();
+                helper.GetChannelCount();
+                // making sure, we're actually on channel 1 (as further actions rely on it and there is no easy way to figure out which channel is currently active during runtime)
+                String[] busses = { "Input", "Output", "Playback" };
+                foreach (var bus in busses)
+                {
+                    Sender.Send($"/1/bus{bus}", 1, Globals.interfaceIp, Globals.interfacePort);
+                    Sender.Send($"/setBankStart", 0, Globals.interfaceIp, Globals.interfacePort);
+                }
+                if (Globals.mirroringRequested == "true")
+                {
+                    this._updateThread.Start();
+                }
             }
-
-            // making sure, we're actually on channel 1 (as further actions rely on it and there is no easy way to figure out which channel is currently active during runtime)
-            Sender.Send($"/1/busInput", 1, Globals.interfaceIp, Globals.interfacePort);
-            Sender.Send($"/setBankStart", 0, Globals.interfaceIp, Globals.interfacePort);
-            Sender.Send($"/1/busOutput", 1, Globals.interfaceIp, Globals.interfacePort);
-            Sender.Send($"/setBankStart", 0, Globals.interfaceIp, Globals.interfacePort);
-            Sender.Send($"/1/busPlayback", 1, Globals.interfaceIp, Globals.interfacePort);
-            Sender.Send($"/setBankStart", 0, Globals.interfaceIp, Globals.interfacePort);
         }
         // This method is called when the plugin is unloaded during the Loupedeck service shutdown.
-        public override void Unload() => this._updateThread.Interrupt();
+        public override void Unload() => this.cancelThread = true;
 
         // setting plugin icons
         private void LoadPluginIcons()

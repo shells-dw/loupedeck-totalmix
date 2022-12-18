@@ -44,8 +44,6 @@ namespace Loupedeck.TotalMixPlugin
         // build the action
         public MainsTrigger() : base()
         {
-            this.AddParameter("globalMute", "Global Mute", groupName: "Master Channel");
-            this.AddParameter("globalSolo", "Global Solo", groupName: "Master Channel");
             this.AddParameter("mainDim", "Dim", groupName: "Master Channel");
             this.AddParameter("mainSpeakerB", "Speaker B", groupName: "Master Channel");
             this.AddParameter("mainRecall", "Recall", groupName: "Master Channel");
@@ -153,14 +151,6 @@ namespace Loupedeck.TotalMixPlugin
                 bitmapBuilder.FillRectangle(0, 0, 80, 80, BitmapColor.Black);
                 switch (actionParameter)
                 {
-                    case "globalMute":
-                        bitmapBuilder.DrawText("Global Mute", x: 0, y: 55, width: 80, height: 15, BitmapColor.White);
-                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("muteOn80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("muteOff80.png")));
-                        break;
-                    case "globalSolo":
-                        bitmapBuilder.DrawText("Global Solo", x: 0, y: 55, width: 80, height: 15, BitmapColor.White);
-                        bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("soloOn80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("soloOff80.png")));
-                        break;
                     case "mainDim":
                         bitmapBuilder.SetBackgroundImage(this.currentState ? EmbeddedResources.ReadImage(EmbeddedResources.FindFile("dimOn80.png")) : EmbeddedResources.ReadImage(EmbeddedResources.FindFile("dimOff80.png")));
                         bitmapBuilder.DrawText("Main Dim", x: 5, y: 40, width: 70, height: 40, fontSize: 15, color: BitmapColor.White);

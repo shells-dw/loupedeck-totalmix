@@ -11,6 +11,14 @@ namespace Loupedeck.TotalMixPlugin.Actions
 
     internal class HelperFunctions
     {
+        // reads if logging was requested either from the Global variable if it exists there - or from the local config file during startup and puts it in the Global variable so it's updated during every start of the Loupedeck if the local config file is changed - then returns it to the caller
+        public String GetLoggingRequested(String PluginDataDirectory)
+        {
+            var json = File.ReadAllText(Path.Combine(PluginDataDirectory, "settings.json"));
+            var configFileSettings = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(json);
+            if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: enableLogging: {configFileSettings.enableLogging.Value}");
+            return configFileSettings.enableLogging.Value;
+        }
         // reads the interface Ip either from the Global variable if it exists there - or from the local config file during startup and puts it in the Global variable so it's updated during every start of the Loupedeck if the local config file is changed - then returns it to the caller
         public String GetDeviceIp(String PluginDataDirectory)
         {
@@ -26,6 +34,7 @@ namespace Loupedeck.TotalMixPlugin.Actions
             {
                 configDeviceIp = Globals.interfaceIp;
             }
+            if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: configDeviceIp: {configDeviceIp}");
             return configDeviceIp;
         }
 
@@ -44,6 +53,7 @@ namespace Loupedeck.TotalMixPlugin.Actions
             {
                 configDevicePort = Globals.interfacePort;
             }
+            if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: configDevicePort: {configDevicePort}");
             return configDevicePort;
         }
 
@@ -62,6 +72,7 @@ namespace Loupedeck.TotalMixPlugin.Actions
             {
                 configDeviceSendPort = Globals.interfacePort;
             }
+            if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: configDeviceSendPort: {configDeviceSendPort}");
             return configDeviceSendPort;
         }
 
@@ -79,6 +90,7 @@ namespace Loupedeck.TotalMixPlugin.Actions
             {
                 configDeviceBackgroundPort = Globals.interfaceBackgroundPort;
             }
+            if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: configDeviceBackgroundPort: {configDeviceBackgroundPort}");
             return configDeviceBackgroundPort;
         }
 
@@ -97,6 +109,7 @@ namespace Loupedeck.TotalMixPlugin.Actions
             {
                 configDeviceBackgroundSendPort = Globals.interfaceBackgroundSendPort;
             }
+            if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: configDeviceBackgroundSendPort: {configDeviceBackgroundSendPort}");
             return configDeviceBackgroundSendPort;
         }
 
@@ -115,6 +128,7 @@ namespace Loupedeck.TotalMixPlugin.Actions
             {
                 configDeviceMirroring = Globals.mirroringRequested;
             }
+            if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: configDeviceMirroring: {configDeviceMirroring}");
             return configDeviceMirroring;
         }
         // option to skip availability checks of TotalMix
@@ -134,8 +148,10 @@ namespace Loupedeck.TotalMixPlugin.Actions
                 {
                     configSkipChecks = Globals.skipChecks;
                 }
+                if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: configSkipChecks: {configSkipChecks}");
                 return configSkipChecks;
-            } catch
+            }
+            catch
             {
                 return "false";
             }
@@ -145,9 +161,12 @@ namespace Loupedeck.TotalMixPlugin.Actions
             try
             {
                 Globals.channelCount = Globals.bankSettings["Input"].Where(d => d.Key.Contains("/1/pan")).ToDictionary(d => d.Key, d => d.Value).Count;
-            } catch
+                if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: Globals.channelCount: {Globals.channelCount}");
+            }
+            catch (Exception ex)
             {
                 Globals.channelCount = 16;
+                if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: Globals.channelCount: {Globals.channelCount} | Exception: {ex.Message}");
             }
         }
 

@@ -3,8 +3,6 @@
 namespace Loupedeck.TotalMixPlugin
 {
     using System;
-    using System.Threading.Tasks;
-    using Loupedeck.TotalMixPlugin.Actions;
 
     public class MasterVolumeAdjustments : PluginDynamicAdjustment
     {
@@ -15,7 +13,7 @@ namespace Loupedeck.TotalMixPlugin
         // build the action
         public MasterVolumeAdjustments()
             : base(hasReset: false) => this.AddParameter("mastervolume", "Master Volume", "Master Channel");
-        protected override bool OnLoad()
+        protected override Boolean OnLoad()
         {
             this._plugin = base.Plugin as TotalMixPlugin;
             if (this._plugin is null)
@@ -52,12 +50,13 @@ namespace Loupedeck.TotalMixPlugin
             try
             {
                 Globals.bankSettings["Input"].TryGetValue("/1/mastervolumeVal", out var outputValue);
+                if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: Dial _Bus: Input (MasterVolume) _ Address: /1/mastervolumeVal _ Value:  {outputValue}");
                 return outputValue;
             }
-            catch
+            catch (Exception ex)
             {
+                if (Globals.loggingEnabled) Tracer.Warning($"TotalMix: Dial _ Bus: Input (MasterVolume) _ Address: /1/mastervolumeVal _ Error: {ex.Message}");
                 return "\t❌";
-
             }
         }
 
@@ -72,8 +71,8 @@ namespace Loupedeck.TotalMixPlugin
                     bitmapBuilder.FillRectangle(0, 0, 80, 80, BitmapColor.White);
 
                     // draw icons for different cases
-                    bitmapBuilder.DrawText("⚠️", x: 25, y: 0, width: 40, height: 40, BitmapColor.Black, fontSize: 30);
-                    bitmapBuilder.DrawText("Error", x: 10, y: 25, width: 30, height: 30, fontSize: 14, color: BitmapColor.Black);
+                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerRed80.png")));
+                    bitmapBuilder.DrawText("No Connection", x: 5, y: 50, width: 70, height: 40, fontSize: 15, color: BitmapColor.Black);
                     return bitmapBuilder.ToImage();
                 }
             }

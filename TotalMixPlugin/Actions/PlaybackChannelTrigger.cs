@@ -3,8 +3,6 @@
 namespace Loupedeck.TotalMixPlugin
 {
     using System;
-    using System.Threading.Tasks;
-    using Loupedeck.TotalMixPlugin.Actions;
 
 
     public class PlaybackChannelTrigger : PluginDynamicCommand
@@ -97,7 +95,7 @@ namespace Loupedeck.TotalMixPlugin
             }
         }
 
-        protected override bool OnLoad()
+        protected override Boolean OnLoad()
         {
             this._plugin = base.Plugin as TotalMixPlugin;
             if (this._plugin is null)
@@ -118,9 +116,9 @@ namespace Loupedeck.TotalMixPlugin
                     bitmapBuilder.DrawRectangle(0, 0, 80, 80, BitmapColor.White);
                     bitmapBuilder.FillRectangle(0, 0, 80, 80, BitmapColor.White);
 
-                    // draw icons for different cases
-                    bitmapBuilder.DrawText("⚠️", x: 45, y: 10, width: 70, height: 70, BitmapColor.Black, fontSize: 60);
-                    bitmapBuilder.DrawText("Error", x: 5, y: 50, width: 70, height: 40, fontSize: 20, color: BitmapColor.Black);
+                    // no connection // error
+                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerRed80.png")));
+                    bitmapBuilder.DrawText("No Connection", x: 5, y: 50, width: 70, height: 40, fontSize: 15, color: BitmapColor.Black);
                     return bitmapBuilder.ToImage();
                 }
             }

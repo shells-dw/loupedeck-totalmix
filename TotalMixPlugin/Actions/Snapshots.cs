@@ -6,8 +6,6 @@
     using System.Linq;
     using System.Text.RegularExpressions;
 
-    using Loupedeck.TotalMixPlugin.Actions;
-
 
     public class LoadSnapshots : PluginDynamicCommand
     {
@@ -45,8 +43,8 @@
                     bitmapBuilder.FillRectangle(0, 0, 80, 80, BitmapColor.White);
 
                     // draw icons for different cases
-                    bitmapBuilder.DrawText("⚠️", x: 45, y: 10, width: 70, height: 70, BitmapColor.Black, fontSize: 60);
-                    bitmapBuilder.DrawText("Error", x: 10, y: 10, width: 30, height: 30, fontSize: 14, color: BitmapColor.Black);
+                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerRed80.png")));
+                    bitmapBuilder.DrawText("No Connection", x: 5, y: 50, width: 70, height: 40, fontSize: 15, color: BitmapColor.Black);
                     return bitmapBuilder.ToImage();
                 }
             }

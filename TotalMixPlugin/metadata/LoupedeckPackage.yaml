@@ -15,7 +15,7 @@ displayName: "TotalMix FX"
 pluginFileName: TotalMixPlugin.dll
 
 # Plugin version.
-version: 1.6.1
+version: 1.7.0
 
 # Author of the plugin. The author can be a company or an individual developer.
 author: Dominik Werland

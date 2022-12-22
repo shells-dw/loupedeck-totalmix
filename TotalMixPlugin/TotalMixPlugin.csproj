@@ -46,8 +46,9 @@
       <HintPath Condition="$(OS) == 'Windows_NT'">C:\Program Files (x86)\Loupedeck\Loupedeck2\PluginApi.dll</HintPath>
       <HintPath Condition="$(OS) != 'Windows_NT'">/Applications/Loupedeck.app/Contents/MonoBundle/PluginApi.dll</HintPath>
     </Reference>
-    <Reference Include="Rug.Osc, Version=1.2.5.17694, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Rug.Osc.1.2.5\lib\Rug.Osc.dll</HintPath>
+    <Reference Include="Rug.Osc, Version=1.2.8.0, Culture=neutral, PublicKeyToken=00d4b1a864aec191, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>rug.osc\Rug.Osc.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -171,6 +172,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\reverbOn80.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="rug.osc\Rug.Osc.dll" />
+    <Content Include="rug.osc\Rug.Osc.pdb" />
+    <Content Include="rug.osc\Rug.Osc.XML" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -68,7 +68,7 @@ dotnet_code_quality_unused_parameters = all:warning
 # var preferences
 csharp_style_var_elsewhere = true:silent
 csharp_style_var_for_built_in_types = true:warning
-csharp_style_var_when_type_is_apparent = true:warning
+csharp_style_var_when_type_is_apparent = true:silent
 
 # Expression-bodied members
 csharp_style_expression_bodied_accessors = when_on_single_line:suggestion
@@ -92,7 +92,7 @@ csharp_prefer_static_local_function = false:warning
 csharp_preferred_modifier_order = public,private,protected,internal,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async
 
 # Code-block preferences
-csharp_prefer_braces = true:warning
+csharp_prefer_braces = true:when_multiline
 csharp_prefer_simple_using_statement = false:warning
 
 # Expression-level preferences

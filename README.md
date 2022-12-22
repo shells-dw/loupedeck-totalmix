@@ -53,13 +53,15 @@ contains the file settings.json (which is created with default values during the
   "backgroundPort": "7002",
   "backgroundSendPort": "9002",
   "mirroringEnabled": "true",
-  "skipChecks": "false"
+  "skipChecks": "false",
+  "enableLogging": "false"
 }
 ```
 where you can configure non-default values or the TotalMix connection.
 
-Note: mirroring of TotalMix is on by default (when you change some values in TotalMix itself or by other means outside the Loupedeck it will be reflected on the Loupedeck plugin), but it has a slight delay as the plugin queries TotalMix. It can have a bit of an performance impact constantly querying the data, which shouldn't be noticeable on most machines, but just in case mirroring isn't needed or wanted, it can be turned off here.
+Note: mirroring of TotalMix is on by default (when you change some values in TotalMix itself or by other means outside the Loupedeck it will be reflected on the Loupedeck plugin), but it has a slight delay as the plugin queries TotalMix. It can have a bit of a performance impact constantly querying the data, which shouldn't be noticeable on most machines, but just in case mirroring isn't needed or wanted, it can be turned off here.
 Also note, mirroring only works for all the main functions, mute, solo, phantom power, volume, gain and pan.
+Also note: Logging is for debugging only. It will significantly slow down Loupedeck overall as traces are gathered and written all over the place. DO NOT ENABLE logging unless you are asked to provide logs and disable it afterwards.
 
 ## Usage
 ### General
@@ -111,6 +113,17 @@ or use Ko-Fi [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi
 
 
 # Changelog
+## [1.7.0] - 2022-12-22
+### Addded
+- Logging, new config switch to enable/disable logging (note: Logging is for debugging only. It will significantly slow down Loupedeck overall as traces are gathered and written all over the place. DO NOT ENABLE logging unless you are asked to provide logs and disable it afterwards.)
+### Fixed
+- Custom config file values were overwritten with every plugin start (oops.)
+- Channels >9 were not mirrored (but still functioned as actions)
+### Fix attempt
+- Rare crash caused by waiting for a callback on async reading a socket that was already disposed. I call it fix attempt as I did not yet find the reason why this happens in the first place, it has been a b[...] to track down as it could happen after several hours of plugin runtime or not at all for days on my machine, so for now the exception is caught and the plugin shouldn't crash from it anymore. Depending the actual root cause this may or may not lead to the mirroring getting stuck. Please report issues if it does. As said, I had a hard time to actually get that crash on my machine with my interface.
+
+<details><summary>Changelog History</summary><p>
+
 ## [1.6.1] - 2022-12-18
 ### Fixed
 - Master Volume value not updating correctly. Note: removing and replacing the Master Volume dial on the Loupedeck is required to apply the change.
@@ -150,6 +163,7 @@ or use Ko-Fi [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi
 ### Added
 Initial release
 
+</p></details>
 
 <!-- Reference Links -->
 

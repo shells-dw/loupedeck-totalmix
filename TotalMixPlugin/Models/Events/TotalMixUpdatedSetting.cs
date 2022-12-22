@@ -3,11 +3,8 @@
     using System;
     public class TotalMixUpdatedSetting : EventArgs
     {
-        public string Address { get; }
+        public String Address { get; }
 
-        public TotalMixUpdatedSetting(string address)
-        {
-            this.Address = address;
-        }
+        public TotalMixUpdatedSetting(String address) => this.Address = address;
     }
 }

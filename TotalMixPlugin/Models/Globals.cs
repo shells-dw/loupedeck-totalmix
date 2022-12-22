@@ -4,13 +4,15 @@ namespace Loupedeck.TotalMixPlugin
 {
     using System;
     using System.Collections.Generic;
-    using System.Net;
 
     public static class Globals
     {
         // holds all page 1 responses for all 3 busses, once filled
         public static Dictionary<String, Dictionary<String, String>> bankSettings = new Dictionary<String, Dictionary<String, String>>();
         public static Dictionary<String, Dictionary<String, String>> recentUpdates = new Dictionary<String, Dictionary<String, String>>();
+
+        // logging enabled?
+        public static Boolean loggingEnabled = false;
 
         // last known device state
         public static Int32 deviceState;

@@ -14,8 +14,6 @@ namespace Loupedeck.TotalMixPlugin
 
     public partial class TotalMixPlugin : Plugin
     {
-
-        private Boolean cancelThread;
         private Boolean totalMixAvailable;
         private readonly Thread _updateThread;
         public event EventHandler<TotalMixUpdatedSetting> UpdatedInputSetting;
@@ -23,6 +21,7 @@ namespace Loupedeck.TotalMixPlugin
         public event EventHandler<TotalMixUpdatedSetting> UpdatedPlaybackSetting;
         public event EventHandler<TotalMixUpdatedSetting> UpdatedGlobalSetting;
         readonly Listener listener = new Listener();
+        private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
         // Gets a value indicating whether this is an Universal plugin or an Application plugin.
         public override Boolean UsesApplicationApiOnly => true;
@@ -32,37 +31,33 @@ namespace Loupedeck.TotalMixPlugin
 
         public TotalMixPlugin() => this._updateThread = new Thread(this.UpdateThread) { IsBackground = true };
 
-        private void UpdateThread()
+        private async void UpdateThread()
         {
-            while (true)
+            while (true && !this._cancellationTokenSource.IsCancellationRequested)
             {
                 try
                 {
                     String[] busses = { "Input", "Output", "Playback" };
                     foreach (var bus in busses)
                     {
-                        this.listener.Listen(bus, $"/1/bus{bus}", 1).Wait();
-
+                        await this.listener.Listen(bus, $"/1/bus{bus}", 1);
                         for (Int32 i = 0; i < Globals.recentUpdates[bus].Count; i++)
                         {
                             this.FireEvent(bus, i);
                         }
+                        await Task.Delay(50);
                     }
-                    this.listener.Listen("global", $"/3", 1).Wait();
+                    await this.listener.Listen("global", $"/3", 1);
                     for (Int32 i = 0; i < Globals.recentUpdates["global"].Count; i++)
                     {
                         this.FireEvent("global", i);
                     }
+                    await Task.Delay(50);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    //
+                    if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: UpdateThread() -> Exception: {ex.Message}");
                 }
-                if (this.cancelThread)
-                {
-                    break;
-                }
-                Task.Delay(100).Wait();
             }
         }
 
@@ -72,34 +67,40 @@ namespace Loupedeck.TotalMixPlugin
             {
                 if (Globals.recentUpdates[bus].ElementAt(index).Key.Contains("main"))
                 {
-                    var TotalMixUpdatedEventArgsGlobal = new TotalMixUpdatedSetting($"{Globals.recentUpdates[bus].ElementAt(index).Key}");
-                    UpdatedInputSetting?.Invoke(this, TotalMixUpdatedEventArgsGlobal);
+                    var TotalMixUpdatedEventArgsMain = new TotalMixUpdatedSetting($"{Globals.recentUpdates[bus].ElementAt(index).Key}");
+                    UpdatedInputSetting?.Invoke(this, TotalMixUpdatedEventArgsMain);
+                    if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: Update detected in {bus} (contained main), fired event: {Globals.recentUpdates[bus].ElementAt(index).Key}");
                 }
                 if (Globals.recentUpdates[bus].ElementAt(index).Key.Contains("master"))
                 {
                     var TotalMixUpdatedEventArgsGlobal = new TotalMixUpdatedSetting($"{Globals.recentUpdates[bus].ElementAt(index).Key}");
                     UpdatedInputSetting?.Invoke(this, TotalMixUpdatedEventArgsGlobal);
+                    if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: Update detected in {bus} (contained master), fired event: {Globals.recentUpdates[bus].ElementAt(index).Key}");
                 }
                 else
                 {
                     var TotalMixUpdatedEventArgs = new TotalMixUpdatedSetting($"{Globals.recentUpdates[bus].ElementAt(index).Key}|{Globals.recentUpdates[bus].ElementAt(index).Value}");
                     UpdatedInputSetting?.Invoke(this, TotalMixUpdatedEventArgs);
+                    if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: Update detected in {bus}, fired event: {Globals.recentUpdates[bus].ElementAt(index).Key}|{Globals.recentUpdates[bus].ElementAt(index).Value}");
                 }
             }
             if (bus == "Output")
             {
                 var TotalMixUpdatedEventArgs = new TotalMixUpdatedSetting($"{Globals.recentUpdates[bus].ElementAt(index).Key}|{Globals.recentUpdates[bus].ElementAt(index).Value}");
                 UpdatedOutputSetting?.Invoke(this, TotalMixUpdatedEventArgs);
+                if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: Update detected in {bus}, fired event: {Globals.recentUpdates[bus].ElementAt(index).Key}|{Globals.recentUpdates[bus].ElementAt(index).Value}");
             }
             if (bus == "Playback")
             {
                 var TotalMixUpdatedEventArgs = new TotalMixUpdatedSetting($"{Globals.recentUpdates[bus].ElementAt(index).Key}|{Globals.recentUpdates[bus].ElementAt(index).Value}");
                 UpdatedPlaybackSetting?.Invoke(this, TotalMixUpdatedEventArgs);
+                if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: Update detected in {bus}, fired event: {Globals.recentUpdates[bus].ElementAt(index).Key}|{Globals.recentUpdates[bus].ElementAt(index).Value}");
             }
             if (bus == "global")
             {
                 var TotalMixUpdatedEventArgs = new TotalMixUpdatedSetting($"{Globals.recentUpdates[bus].ElementAt(index).Key}");
                 UpdatedGlobalSetting?.Invoke(this, TotalMixUpdatedEventArgs);
+                if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: Update detected in {bus}, fired event: {Globals.recentUpdates[bus].ElementAt(index).Key}");
             }
             Globals.recentUpdates[bus].Remove(Globals.recentUpdates[bus].ElementAt(index).Key);
         }
@@ -114,6 +115,18 @@ namespace Loupedeck.TotalMixPlugin
             var helperFunction = new TotalMixPlugin();
             var pluginDataDirectory = helperFunction.GetPluginDataDirectory();
             var helper = new HelperFunctions();
+            if (helper.GetLoggingRequested(pluginDataDirectory) == "true")
+            {
+                Globals.loggingEnabled = true;
+                Tracer.EnableLogFile(true);
+                Tracer.EnableTracing(true);
+            }
+            else
+            {
+                Globals.loggingEnabled = false;
+                Tracer.EnableLogFile(false);
+                Tracer.EnableTracing(false);
+            }
             helper.GetDeviceIp(pluginDataDirectory);
             helper.GetDevicePort(pluginDataDirectory);
             helper.GetDeviceSendPort(pluginDataDirectory);
@@ -128,14 +141,17 @@ namespace Loupedeck.TotalMixPlugin
                 {
                     this.OnPluginStatusChanged(Loupedeck.PluginStatus.Normal, "Connected", null, null);
                     this.totalMixAvailable = true;
+                    if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: CheckForTotalMix() -> totalMixAvailable = true");
                 }
                 else
                 {
                     this.OnPluginStatusChanged(Loupedeck.PluginStatus.Error, "TotalMixFX doesn't seem to be running or OSC isn't setup correctly in TotalMixFX for this plugin to work", "https://github.com/shells-dw/loupedeck-totalmix#setup-for-osc", "See github page for instructions on how to set up TotalMix");
+                    if (Globals.loggingEnabled) Tracer.Error($"TotalMix: CheckForTotalMix() -> totalMixAvailable = false");
                 }
             }
             if (Globals.skipChecks == "true" || this.totalMixAvailable)
             {
+                if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: filling the Global Dict bankSettings initially");
                 // filling the Global Dict bankSettings initially
                 this.listener.Listen("Input", "/1/busInput", 1).Wait();
                 this.listener.Listen("Output", "/1/busOutput", 1).Wait();
@@ -156,7 +172,7 @@ namespace Loupedeck.TotalMixPlugin
             }
         }
         // This method is called when the plugin is unloaded during the Loupedeck service shutdown.
-        public override void Unload() => this.cancelThread = true;
+        public override void Unload() => this._cancellationTokenSource.Cancel();
 
         // setting plugin icons
         private void LoadPluginIcons()

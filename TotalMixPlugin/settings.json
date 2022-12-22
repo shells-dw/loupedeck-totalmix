@@ -5,5 +5,6 @@
   "backgroundPort": "7002",
   "backgroundSendPort": "9002",
   "mirroringEnabled": "true",
-  "skipChecks": "false"
+  "skipChecks": "false",
+  "enableLogging": "false"
 }

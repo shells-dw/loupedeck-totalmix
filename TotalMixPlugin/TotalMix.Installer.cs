@@ -3,17 +3,14 @@
 namespace Loupedeck.TotalMixPlugin
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Reflection;
-    using System.Runtime.Remoting.Messaging;
 
-    using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
     public partial class TotalMixPlugin
     {
-        String[] expectedSettings = { "host", "port", "sendPort", "backgroundPort", "backgroundSendPort", "mirroringEnabled", "skipChecks" };
+        readonly String[] expectedSettings = { "host", "port", "sendPort", "backgroundPort", "backgroundSendPort", "mirroringEnabled", "skipChecks", "enableLogging" };
         public override Boolean Install()
         {
             // Here we ensure the plugin data directory is there.
@@ -21,6 +18,7 @@ namespace Loupedeck.TotalMixPlugin
             var pluginDataDirectory = helperFunction.GetPluginDataDirectory();
             if (!IoHelpers.EnsureDirectoryExists(pluginDataDirectory))
             {
+                if (Globals.loggingEnabled) Tracer.Error($"TotalMix: !IoHelpers.EnsureDirectoryExists(pluginDataDirectory)");
                 return false;
             }
 
@@ -58,13 +56,19 @@ namespace Loupedeck.TotalMixPlugin
                             case "skipChecks":
                                 value = "false";
                                 break;
+                            case "enableLogging":
+                                value = "false";
+                                break;
                         }
                         jsonObj.Add(setting, value);
                         File.WriteAllText(filePath, jsonObj.ToString());
                     }
                 }
             }
-            ResourceReader.CreateFileFromResource("Loupedeck.TotalMixPlugin.settings.json", filePath);
+            else
+            {
+                ResourceReader.CreateFileFromResource("Loupedeck.TotalMixPlugin.settings.json", filePath);
+            }
             return true;
         }
         public class ResourceReader

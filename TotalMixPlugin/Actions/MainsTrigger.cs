@@ -69,7 +69,14 @@ namespace Loupedeck.TotalMixPlugin
             this._plugin.UpdatedInputSetting += (sender, e) => this.ActionImageChanged(e.Address);
             return base.OnLoad();
         }
-
+        protected override Boolean ProcessTouchEvent(String actionParameter, DeviceTouchEvent touchEvent)
+        {
+            while (!touchEvent.IsTouchUp() && actionParameter == "mainTalkback")
+            {
+                Sender.Send($"/1/{actionParameter}", 1, Globals.interfaceIp, Globals.interfacePort);
+            }
+            return base.ProcessTouchEvent(actionParameter, touchEvent);
+        }
         // button is pressed
         protected override void RunCommand(String actionParameter)
         {
@@ -130,8 +137,8 @@ namespace Loupedeck.TotalMixPlugin
                     bitmapBuilder.FillRectangle(0, 0, 80, 80, BitmapColor.White);
 
                     // draw icons for different cases
-                    bitmapBuilder.DrawText("⚠️", x: 45, y: 10, width: 70, height: 70, BitmapColor.Black, fontSize: 60);
-                    bitmapBuilder.DrawText("Error", x: 5, y: 50, width: 70, height: 40, fontSize: 20, color: BitmapColor.Black);
+                    bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerRed80.png")));
+                    bitmapBuilder.DrawText("No Connection", x: 5, y: 50, width: 70, height: 40, fontSize: 15, color: BitmapColor.Black);
                     return bitmapBuilder.ToImage();
                 }
             }

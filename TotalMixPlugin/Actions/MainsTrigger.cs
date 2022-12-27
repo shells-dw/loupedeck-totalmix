@@ -133,12 +133,12 @@ namespace Loupedeck.TotalMixPlugin
                 using (var bitmapBuilder = new BitmapBuilder(imageSize))
                 {
                     //drawing a black full-size rectangle to overlay the default graphic (TODO: figure out if that's maybe something that is done nicer than this)
-                    bitmapBuilder.DrawRectangle(0, 0, 80, 80, BitmapColor.White);
-                    bitmapBuilder.FillRectangle(0, 0, 80, 80, BitmapColor.White);
+                    bitmapBuilder.DrawRectangle(0, 0, 80, 80, BitmapColor.Black);
+                    bitmapBuilder.FillRectangle(0, 0, 80, 80, BitmapColor.Black);
 
                     // draw icons for different cases
                     bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerRed80.png")));
-                    bitmapBuilder.DrawText("No Connection", x: 5, y: 50, width: 70, height: 40, fontSize: 15, color: BitmapColor.Black);
+                    bitmapBuilder.DrawText("No Connection", x: 5, y: 50, width: 70, height: 20, fontSize: 10, color: BitmapColor.White);
                     return bitmapBuilder.ToImage();
                 }
             }

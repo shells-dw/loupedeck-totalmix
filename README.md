@@ -8,7 +8,7 @@
 
 ## What Is This (and what does it do?)
 
-It's a plugin for the [Loupedeck Live Consoles][Loupedeck] that triggers actions as well as individual channel actions on the [RME TotalMix FX][] application.
+It's a plugin for the [Loupedeck Live Consoles][Loupedeck] that triggers actions as well as individual channel actions on the [RME TotalMix FX][] application. Note: a RME audio interface/card is needed for TotalMix FX to work.
 
 It utilizes the OSC protocol support which offers more functionality than MIDI commands, is more solid than MIDI and doesn't interfere with your already existing MIDI setup.
 
@@ -36,9 +36,9 @@ Then, make sure to enable "Enable OSC control". Also link both Remote Controller
 
 ![Setup TotalMix OSC](/TotalMixPlugin/docs/images/OSC_setup1.png) ![Setup TotalMix OSC 2](/TotalMixPlugin/docs/images/OSC_setup2.png)
 
-No additional software is needed. In theory this should also be able to control a TotalMix instance running on a different computer than the StreamDeck is attached to - as long as you can reach this machine on the given port with UDP packets. 
+No additional software is needed. In theory this should also be able to control a TotalMix instance running on a different computer than the Loupedeck is attached to - as long as you can reach this machine on the given port with UDP packets. 
 
-Note: if you're using a (software) firewall on your PC and/or any firewall between the StreamDeck and the target PC - make sure to allow the plugin to communicate with the TotalMix port as well as allow TotalMix to listen to it. 
+Note: if you're using a (software) firewall on your PC and/or any firewall between the Loupedeck and the target PC - make sure to allow the plugin to communicate with the TotalMix port as well as allow TotalMix to listen to it. 
 
 ## settings.json
 Windows: %localappdata%\Loupedeck\PluginData\TotalMix
@@ -93,8 +93,7 @@ Sadly I can't do anything about that, it's just how TotalMix works currently.
 # Limitations
 
 - MIDI: I decided against MIDI support, MIDI functionality is already included in the Loupedeck and requires additional software (virtual MIDI loopback interface) to run, also I'm not sure anyone would actually benefit from supporting MIDI, so I consider it a lot of code for not so much value. Let me know if you desperately need it though.
-- Actions are currently limited to somewhat basic functions that trigger and I can test. I have a Fireface UC available which doesn't support FX, so I can't really test that. Let me know if that's something you need the plugin to support.
-- Talkback is active only as long as the button is actually pressed, which is something I have not yet implemented here (as it's the only function that acts that way AFAIK and I don't use it personally, I didn't bother). 
+- Actions are currently limited to somewhat basic functions I can test. I have a Fireface UC available which doesn't support DSP FX, so I can't really develop and test setting individual FX settings.
 
 # I have an issue or miss a feature?
 
@@ -108,11 +107,19 @@ If you're interested in using this plugin but something you really need is missi
 # Support
 
 If you'd like to drop me a coffee for the hours I've spent on this:
-[![Tip](https://img.shields.io/badge/Donate-PayPal-green.svg)]( https://www.paypal.com/donate?hosted_button_id=8KXD334CCEEC2)
+[![Tip](https://img.shields.io/badge/Donate-PayPal-green.svg)]( https://www.paypal.com/donate?hosted_button_id=8KXD334CCEEC2), sponsor me on [GitHub](https://github.com/sponsors/shells-dw) 
 or use Ko-Fi [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Y8Y4CE9LH)
 
 
 # Changelog
+## [1.7.1] - 2022-12-27
+### Fixed
+- Beautified/clearified error message displayed when no connection to TotalMix is possible
+### Updated
+- Clarifications in README.MD
+
+<details><summary>Changelog History</summary><p>
+
 ## [1.7.0] - 2022-12-22
 ### Addded
 - Logging, new config switch to enable/disable logging (note: Logging is for debugging only. It will significantly slow down Loupedeck overall as traces are gathered and written all over the place. DO NOT ENABLE logging unless you are asked to provide logs and disable it afterwards.)
@@ -121,9 +128,6 @@ or use Ko-Fi [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi
 - Channels >9 were not mirrored (but still functioned as actions)
 ### Fix attempt
 - Rare crash caused by waiting for a callback on async reading a socket that was already disposed. I call it fix attempt as I did not yet find the reason why this happens in the first place, it has been a b[...] to track down as it could happen after several hours of plugin runtime or not at all for days on my machine, so for now the exception is caught and the plugin shouldn't crash from it anymore. Depending the actual root cause this may or may not lead to the mirroring getting stuck. Please report issues if it does. As said, I had a hard time to actually get that crash on my machine with my interface.
-
-<details><summary>Changelog History</summary><p>
-
 ## [1.6.1] - 2022-12-18
 ### Fixed
 - Master Volume value not updating correctly. Note: removing and replacing the Master Volume dial on the Loupedeck is required to apply the change.
@@ -170,5 +174,5 @@ Initial release
 [Loupedeck]: https://loupedeck.com "Loupedeck.com"
 [Releases]: https://github.com/shells-dw/loupedeck-totalmix/releases "Releases"
 [RME TotalMix FX]: https://www.rme-audio.de/totalmix-fx.html "RME's TotalmMix FX product page"
-[GitHub issues]: https://github.com/shells-dw/streamdeck-totalmix/issues "GitHub issues link"
+[GitHub issues]: https://github.com/shells-dw/loupedeck-totalmix/issues "GitHub issues link"
 

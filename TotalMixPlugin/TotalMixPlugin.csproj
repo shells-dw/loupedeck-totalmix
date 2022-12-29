@@ -99,16 +99,16 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="metadata\icon16.png">
+    <EmbeddedResource Include="metadata\Icon16x16.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="metadata\icon256.png">
+    <EmbeddedResource Include="metadata\Icon256x256.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="metadata\icon32.png">
+    <EmbeddedResource Include="metadata\Icon32x32.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="metadata\icon48.png">
+    <EmbeddedResource Include="metadata\Icon48x48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\muteOff80.png" />

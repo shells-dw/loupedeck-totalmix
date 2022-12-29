@@ -110,6 +110,9 @@ or use Ko-Fi [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi
 
 
 # Changelog
+## [1.8.1] - 2022-12-29
+### Updated
+- changed image name to Loupedeck's preferred naming scheme
 ## [1.8.0] - 2022-12-29
 ### Updated
 - Reworked/finalized logging

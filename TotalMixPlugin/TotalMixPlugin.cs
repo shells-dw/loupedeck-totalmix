@@ -166,10 +166,10 @@ namespace Loupedeck.TotalMixPlugin
         // setting plugin icons
         private void LoadPluginIcons()
         {
-            this.Info.Icon16x16 = EmbeddedResources.ReadImage(EmbeddedResources.FindFile("icon16.png"));
-            this.Info.Icon32x32 = EmbeddedResources.ReadImage(EmbeddedResources.FindFile("icon32.png"));
-            this.Info.Icon48x48 = EmbeddedResources.ReadImage(EmbeddedResources.FindFile("icon48.png"));
-            this.Info.Icon256x256 = EmbeddedResources.ReadImage(EmbeddedResources.FindFile("icon256.png"));
+            this.Info.Icon16x16 = EmbeddedResources.ReadImage(EmbeddedResources.FindFile("Icon16x16.png"));
+            this.Info.Icon32x32 = EmbeddedResources.ReadImage(EmbeddedResources.FindFile("Icon32x32.png"));
+            this.Info.Icon48x48 = EmbeddedResources.ReadImage(EmbeddedResources.FindFile("Icon48x48.png"));
+            this.Info.Icon256x256 = EmbeddedResources.ReadImage(EmbeddedResources.FindFile("Icon256x256.png"));
         }
     }
 }

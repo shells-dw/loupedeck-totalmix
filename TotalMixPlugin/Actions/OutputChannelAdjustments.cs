@@ -45,6 +45,7 @@ namespace Loupedeck.TotalMixPlugin
         // This method is called when the dial associated to the plugin is rotated.
         protected override void ApplyAdjustment(String actionParameter, Int32 turn)
         {
+            this.Log.Info($"{DateTime.Now} - TotalMix: OutputChannelAdjustments _ RunCommand {actionParameter}");
             // check action parameter is actually set
             if (actionParameter.Contains("|"))
             {
@@ -78,9 +79,9 @@ namespace Loupedeck.TotalMixPlugin
                     Sender.Send($"/1/{this.action}{channel}", this.valueFloat, Globals.interfaceIp, Globals.interfacePort);
                     this.AdjustmentValueChanged(actionParameter); // Notify the Loupedeck service that the adjustment value has changed.
                 }
-                catch
+                catch (Exception ex)
                 {
-                    //
+                    this.Log.Error($"{DateTime.Now} - TotalMix: OutputChannelAdjustments _ Exception {ex}");
                 }
             }
 
@@ -104,12 +105,11 @@ namespace Loupedeck.TotalMixPlugin
                         try
                         {
                             Globals.bankSettings[$"{this.bus}"].TryGetValue($"/1/{action}{channel}Val", out var outputValue);
-                            if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: Dial _ Bus: {this.bus} _ Address: /1/{action}{channel}Val _ Value:  {outputValue}");
                             return outputValue;
                         }
                         catch (Exception ex)
                         {
-                            if (Globals.loggingEnabled) Tracer.Warning($"TotalMix: Dial _ Bus: {this.bus} _ Address: /1/{action}{channel}Val _ Error: {ex.Message}");
+                            this.Log.Warning($"{DateTime.Now} - TotalMix: Dial _ Bus: {this.bus} _ Address: /1/{action}{channel}Val _ Error: {ex.Message}");
                             return "\t❌";
                         }
                     }
@@ -136,19 +136,18 @@ namespace Loupedeck.TotalMixPlugin
                             {
                                 outputValue = $"{Math.Round(newValue * -1)} >";
                             }
-                            if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: Dial _ Bus: {this.bus} _ Address: /1/{action}{channel}Val _ Value:  {outputValue}");
                             return outputValue;
                         }
                         catch (Exception ex)
                         {
-                            if (Globals.loggingEnabled) Tracer.Warning($"TotalMix: Dial _ Bus: {this.bus} _ Address: /1/{action}{channel}Val _ Error: {ex.Message}");
+                            this.Log.Warning($"{DateTime.Now} - TotalMix: Dial _ Bus: {this.bus} _ Address: /1/{action}{channel}Val _ Error: {ex.Message}");
                             return "\t❌";
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    if (Globals.loggingEnabled) Tracer.Error($"TotalMix: Dial _ Bus: {this.bus} _ Address: /1/{action}{channel}Val _ Error: {ex.Message}");
+                    this.Log.Error($"{DateTime.Now} - TotalMix: Dial _ Bus: {this.bus} _ Address: /1/{action}{channel}Val _ Error: {ex.Message}");
                 }
             }
             return "err";

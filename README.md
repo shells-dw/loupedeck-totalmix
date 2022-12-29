@@ -53,15 +53,13 @@ contains the file settings.json (which is created with default values during the
   "backgroundPort": "7002",
   "backgroundSendPort": "9002",
   "mirroringEnabled": "true",
-  "skipChecks": "false",
-  "enableLogging": "false"
+  "skipChecks": "false"
 }
 ```
 where you can configure non-default values or the TotalMix connection.
 
 Note: mirroring of TotalMix is on by default (when you change some values in TotalMix itself or by other means outside the Loupedeck it will be reflected on the Loupedeck plugin), but it has a slight delay as the plugin queries TotalMix. It can have a bit of a performance impact constantly querying the data, which shouldn't be noticeable on most machines, but just in case mirroring isn't needed or wanted, it can be turned off here.
 Also note, mirroring only works for all the main functions, mute, solo, phantom power, volume, gain and pan.
-Also note: Logging is for debugging only. It will significantly slow down Loupedeck overall as traces are gathered and written all over the place. DO NOT ENABLE logging unless you are asked to provide logs and disable it afterwards.
 
 ## Usage
 ### General
@@ -112,14 +110,17 @@ or use Ko-Fi [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi
 
 
 # Changelog
+## [1.8.0] - 2022-12-29
+### Updated
+- Reworked/finalized logging
+
+<details><summary>Changelog History</summary><p>
+
 ## [1.7.1] - 2022-12-27
 ### Fixed
 - Beautified/clearified error message displayed when no connection to TotalMix is possible
 ### Updated
 - Clarifications in README.MD
-
-<details><summary>Changelog History</summary><p>
-
 ## [1.7.0] - 2022-12-22
 ### Addded
 - Logging, new config switch to enable/disable logging (note: Logging is for debugging only. It will significantly slow down Loupedeck overall as traces are gathered and written all over the place. DO NOT ENABLE logging unless you are asked to provide logs and disable it afterwards.)

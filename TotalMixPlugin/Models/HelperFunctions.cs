@@ -14,14 +14,16 @@ namespace Loupedeck.TotalMixPlugin.Actions
         // reads if logging was requested either from the Global variable if it exists there - or from the local config file during startup and puts it in the Global variable so it's updated during every start of the Loupedeck if the local config file is changed - then returns it to the caller
         public String GetLoggingRequested(String PluginDataDirectory)
         {
+            var _this = new TotalMixPlugin();
             var json = File.ReadAllText(Path.Combine(PluginDataDirectory, "settings.json"));
             var configFileSettings = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(json);
-            if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: enableLogging: {configFileSettings.enableLogging.Value}");
+            _this.Log.Info($"{DateTime.Now} - TotalMix: enableLogging: {configFileSettings.enableLogging.Value}");
             return configFileSettings.enableLogging.Value;
         }
         // reads the interface Ip either from the Global variable if it exists there - or from the local config file during startup and puts it in the Global variable so it's updated during every start of the Loupedeck if the local config file is changed - then returns it to the caller
         public String GetDeviceIp(String PluginDataDirectory)
         {
+            var _this = new TotalMixPlugin();
             String configDeviceIp;
             if (Globals.interfaceIp == null)
             {
@@ -34,13 +36,14 @@ namespace Loupedeck.TotalMixPlugin.Actions
             {
                 configDeviceIp = Globals.interfaceIp;
             }
-            if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: configDeviceIp: {configDeviceIp}");
+            _this.Log.Info($"{DateTime.Now} - TotalMix: configDeviceIp: {configDeviceIp}");
             return configDeviceIp;
         }
 
         // reads the interface port (to send to) either from the Global variable if it exists there - or from the local config file during startup and puts it in the Global variable so it's updated during every start of the Loupedeck if the local config file is changed - then returns it to the caller
         public Int32 GetDevicePort(String PluginDataDirectory)
         {
+            var _this = new TotalMixPlugin();
             Int32 configDevicePort;
             if (Globals.interfacePort == 0)
             {
@@ -53,13 +56,14 @@ namespace Loupedeck.TotalMixPlugin.Actions
             {
                 configDevicePort = Globals.interfacePort;
             }
-            if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: configDevicePort: {configDevicePort}");
+            _this.Log.Info($"{DateTime.Now} - TotalMix: configDevicePort: {configDevicePort}");
             return configDevicePort;
         }
 
         // reads the interface send port (the port to listen for responses from the device) either from the Global variable if it exists there - or from the local config file during startup and puts it in the Global variable so it's updated during every start of the Loupedeck if the local config file is changed - then returns it to the caller
         public Int32 GetDeviceSendPort(String PluginDataDirectory)
         {
+            var _this = new TotalMixPlugin();
             Int32 configDeviceSendPort;
             if (Globals.interfaceSendPort == 0)
             {
@@ -72,12 +76,13 @@ namespace Loupedeck.TotalMixPlugin.Actions
             {
                 configDeviceSendPort = Globals.interfacePort;
             }
-            if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: configDeviceSendPort: {configDeviceSendPort}");
+            _this.Log.Info($"{DateTime.Now} - TotalMix: configDeviceSendPort: {configDeviceSendPort}");
             return configDeviceSendPort;
         }
 
         public Int32 GetDeviceBackgroundPort(String PluginDataDirectory)
         {
+            var _this = new TotalMixPlugin();
             Int32 configDeviceBackgroundPort;
             if (Globals.interfaceBackgroundPort == 0)
             {
@@ -90,13 +95,14 @@ namespace Loupedeck.TotalMixPlugin.Actions
             {
                 configDeviceBackgroundPort = Globals.interfaceBackgroundPort;
             }
-            if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: configDeviceBackgroundPort: {configDeviceBackgroundPort}");
+            _this.Log.Info($"{DateTime.Now} - TotalMix: configDeviceBackgroundPort: {configDeviceBackgroundPort}");
             return configDeviceBackgroundPort;
         }
 
         // reads the interface send port (the port to listen for responses from the device) either from the Global variable if it exists there - or from the local config file during startup and puts it in the Global variable so it's updated during every start of the Loupedeck if the local config file is changed - then returns it to the caller
         public Int32 GetDeviceBackgroundSendPort(String PluginDataDirectory)
         {
+            var _this = new TotalMixPlugin();
             Int32 configDeviceBackgroundSendPort;
             if (Globals.interfaceBackgroundSendPort == 0)
             {
@@ -109,13 +115,14 @@ namespace Loupedeck.TotalMixPlugin.Actions
             {
                 configDeviceBackgroundSendPort = Globals.interfaceBackgroundSendPort;
             }
-            if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: configDeviceBackgroundSendPort: {configDeviceBackgroundSendPort}");
+            _this.Log.Info($"{DateTime.Now} - TotalMix: configDeviceBackgroundSendPort: {configDeviceBackgroundSendPort}");
             return configDeviceBackgroundSendPort;
         }
 
         // reads if mirroring of TotalMix is requested or not; reads either from the Global variable if it exists there - or from the local config file during startup and puts it in the Global variable so it's updated during every start of the Loupedeck if the local config file is changed - then returns it to the caller
         public String GetDeviceMirroringRequested(String PluginDataDirectory)
         {
+            var _this = new TotalMixPlugin();
             String configDeviceMirroring;
             if (Globals.mirroringRequested == null)
             {
@@ -128,12 +135,13 @@ namespace Loupedeck.TotalMixPlugin.Actions
             {
                 configDeviceMirroring = Globals.mirroringRequested;
             }
-            if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: configDeviceMirroring: {configDeviceMirroring}");
+            _this.Log.Info($"{DateTime.Now} - TotalMix: configDeviceMirroring: {configDeviceMirroring}");
             return configDeviceMirroring;
         }
         // option to skip availability checks of TotalMix
         public String GetSkipDeviceChecks(String PluginDataDirectory)
         {
+            var _this = new TotalMixPlugin();
             try
             {
                 String configSkipChecks;
@@ -148,25 +156,27 @@ namespace Loupedeck.TotalMixPlugin.Actions
                 {
                     configSkipChecks = Globals.skipChecks;
                 }
-                if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: configSkipChecks: {configSkipChecks}");
+                _this.Log.Info($"{DateTime.Now} - TotalMix: configSkipChecks: {configSkipChecks}");
                 return configSkipChecks;
             }
-            catch
+            catch (Exception ex)
             {
+                _this.Log.Error($"{DateTime.Now} - TotalMix: configSkipChecks: Exception {ex.Message}");
                 return "false";
             }
         }
         public void GetChannelCount()
         {
+            var _this = new TotalMixPlugin();
             try
             {
                 Globals.channelCount = Globals.bankSettings["Input"].Where(d => d.Key.Contains("/1/pan")).ToDictionary(d => d.Key, d => d.Value).Count;
-                if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: Globals.channelCount: {Globals.channelCount}");
+                _this.Log.Info($"{DateTime.Now} - TotalMix: Globals.channelCount: {Globals.channelCount}");
             }
             catch (Exception ex)
             {
                 Globals.channelCount = 16;
-                if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: Globals.channelCount: {Globals.channelCount} | Exception: {ex.Message}");
+                _this.Log.Info($"{DateTime.Now} - TotalMix: Globals.channelCount: {Globals.channelCount} | Exception: {ex.Message}");
             }
         }
 
@@ -187,8 +197,10 @@ namespace Loupedeck.TotalMixPlugin.Actions
 
         public Int32 CheckForTotalMix()
         {
+            var _this = new TotalMixPlugin();
             var checkDevice = new CheckDevice();
             Task.Run(() => checkDevice.Listen(Globals.interfaceBackgroundSendPort)).Wait();
+            _this.Log.Info($"{DateTime.Now} - TotalMix: CheckForTotalMix: {Globals.deviceState}");
             return Globals.deviceState;
         }
     }

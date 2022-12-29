@@ -11,9 +11,6 @@ namespace Loupedeck.TotalMixPlugin
         public static Dictionary<String, Dictionary<String, String>> bankSettings = new Dictionary<String, Dictionary<String, String>>();
         public static Dictionary<String, Dictionary<String, String>> recentUpdates = new Dictionary<String, Dictionary<String, String>>();
 
-        // logging enabled?
-        public static Boolean loggingEnabled = false;
-
         // last known device state
         public static Int32 deviceState;
 

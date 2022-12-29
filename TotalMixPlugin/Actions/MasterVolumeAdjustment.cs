@@ -3,6 +3,7 @@
 namespace Loupedeck.TotalMixPlugin
 {
     using System;
+    using System.Security.Cryptography;
 
     public class MasterVolumeAdjustments : PluginDynamicAdjustment
     {
@@ -27,6 +28,7 @@ namespace Loupedeck.TotalMixPlugin
         // This method is called when the dial associated to the plugin is rotated.
         protected override void ApplyAdjustment(String actionParameter, Int32 turn)
         {
+            this.Log.Info($"{DateTime.Now} - TotalMix: MasterVolumeAdjustment _ RunCommand {actionParameter}");
             try
             {
                 Globals.bankSettings[$"Input"].TryGetValue($"/1/mastervolume", out var value);
@@ -38,9 +40,9 @@ namespace Loupedeck.TotalMixPlugin
                 // make it so
                 Sender.Send($"/1/mastervolume", this.valueFloat, Globals.interfaceIp, Globals.interfacePort);
                 this.AdjustmentValueChanged(actionParameter); // Notify the Loupedeck service that the adjustment value has changed.
-            } catch
+            } catch (Exception ex)
             {
-                //
+                this.Log.Error($"{DateTime.Now} - TotalMix: MasterVolumeAdjustment _ Exception {ex}");
             }
         }
 
@@ -50,12 +52,11 @@ namespace Loupedeck.TotalMixPlugin
             try
             {
                 Globals.bankSettings["Input"].TryGetValue("/1/mastervolumeVal", out var outputValue);
-                if (Globals.loggingEnabled) Tracer.Trace($"TotalMix: Dial _Bus: Input (MasterVolume) _ Address: /1/mastervolumeVal _ Value:  {outputValue}");
                 return outputValue;
             }
             catch (Exception ex)
             {
-                if (Globals.loggingEnabled) Tracer.Warning($"TotalMix: Dial _ Bus: Input (MasterVolume) _ Address: /1/mastervolumeVal _ Error: {ex.Message}");
+                this.Log.Warning($"{DateTime.Now} - TotalMix: Dial _ Bus: Input (MasterVolume) _ Address: /1/mastervolumeVal _ Error: {ex.Message}");
                 return "\t❌";
             }
         }

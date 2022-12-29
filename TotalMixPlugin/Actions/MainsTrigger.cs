@@ -80,6 +80,7 @@ namespace Loupedeck.TotalMixPlugin
         // button is pressed
         protected override void RunCommand(String actionParameter)
         {
+            this.Log.Info($"{DateTime.Now} - TotalMix: MainsTrigger _ RunCommand {actionParameter}");
             if (actionParameter == "showhideui")
             {
                 Process[] p = Process.GetProcessesByName("TotalMixFX");

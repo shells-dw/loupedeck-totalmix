@@ -27,9 +27,12 @@
             }
         }
         // Button is pressed
-        protected override void RunCommand(String actionParameter) =>
+        protected override void RunCommand(String actionParameter)
+        {
             // send command to load selected snapshot
             Sender.Send($"/3/{actionParameter}", 1, Globals.interfaceIp, Globals.interfacePort);
+            this.Log.Info($"{DateTime.Now} - TotalMix: Snapshots _ RunCommand {actionParameter}");
+        }
 
         // update command image (nothing to update here per se, but that's called to draw whatever is shown on the Loupedeck)
         protected override BitmapImage GetCommandImage(String actionParameter, PluginImageSize imageSize)
@@ -82,7 +85,6 @@
             {
                 FileInfo[] totalMixConfig = Directory.GetFiles(totalMixDir, "last.*.xml").Select(x => new FileInfo(x)).ToArray();
                 var curentConfig = totalMixConfig.OrderByDescending(f => f.LastWriteTime).FirstOrDefault();
-
                 this.current = new List<String>();
                 foreach (var line in File.ReadAllLines(curentConfig.ToString()))
                 {

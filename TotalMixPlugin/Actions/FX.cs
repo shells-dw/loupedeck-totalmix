@@ -34,6 +34,7 @@
         // Button is pressed
         protected override void RunCommand(String actionParameter)
         {
+            this.Log.Info($"{DateTime.Now} - TotalMix: RunCommand {actionParameter}");
             try
             {
                 Globals.bankSettings["global"].TryGetValue($"/3/{actionParameter}", out var value);

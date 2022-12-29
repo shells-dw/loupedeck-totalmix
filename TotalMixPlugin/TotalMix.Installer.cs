@@ -14,11 +14,11 @@ namespace Loupedeck.TotalMixPlugin
         public override Boolean Install()
         {
             // Here we ensure the plugin data directory is there.
-            var helperFunction = new TotalMixPlugin();
-            var pluginDataDirectory = helperFunction.GetPluginDataDirectory();
+            var _this = new TotalMixPlugin();
+            var pluginDataDirectory = _this.GetPluginDataDirectory();
             if (!IoHelpers.EnsureDirectoryExists(pluginDataDirectory))
             {
-                if (Globals.loggingEnabled) Tracer.Error($"TotalMix: !IoHelpers.EnsureDirectoryExists(pluginDataDirectory)");
+                _this.Log.Info($"{DateTime.Now} - Installer: pluginDataDirectory doesn't exist");
                 return false;
             }
 
@@ -26,6 +26,7 @@ namespace Loupedeck.TotalMixPlugin
             var filePath = System.IO.Path.Combine(pluginDataDirectory, System.IO.Path.Combine(pluginDataDirectory, "settings.json"));
             if (File.Exists(filePath))
             {
+                _this.Log.Info($"{DateTime.Now} - Installer: File exists");
                 var json = File.ReadAllText(filePath);
                 var jsonObj = JObject.Parse(json);
                 foreach (var setting in this.expectedSettings)
@@ -56,9 +57,6 @@ namespace Loupedeck.TotalMixPlugin
                             case "skipChecks":
                                 value = "false";
                                 break;
-                            case "enableLogging":
-                                value = "false";
-                                break;
                         }
                         jsonObj.Add(setting, value);
                         File.WriteAllText(filePath, jsonObj.ToString());
@@ -68,6 +66,7 @@ namespace Loupedeck.TotalMixPlugin
             else
             {
                 ResourceReader.CreateFileFromResource("Loupedeck.TotalMixPlugin.settings.json", filePath);
+                _this.Log.Info($"{DateTime.Now} - Installer: config file does not yet exist, creating default file");
             }
             return true;
         }

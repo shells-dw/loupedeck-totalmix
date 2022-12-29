@@ -62,6 +62,7 @@ namespace Loupedeck.TotalMixPlugin
         // button is pressed
         protected override void RunCommand(String actionParameter)
         {
+            this.Log.Info($"{DateTime.Now} - TotalMix: InputChannelTrigger _ RunCommand {actionParameter}");
             // check action parameter is actually set
             if (actionParameter.Contains("|"))
             {
@@ -97,9 +98,9 @@ namespace Loupedeck.TotalMixPlugin
                     }
                     this.ActionImageChanged(actionParameter); // Notify the Loupedeck service that the actionImage has changed.
                 }
-                catch
+                catch (Exception ex)
                 {
-                    //
+                    this.Log.Error($"{DateTime.Now} - TotalMix: InputChannelTrigger _ Exception {ex}");
                 }
             }
         }

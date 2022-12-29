@@ -16,10 +16,7 @@ namespace Loupedeck.TotalMixPlugin
         String action;
 
         // build the action
-        public PlaybackChannelTrigger() : base("Playback Channel Buttons", "Options for Playback Channels", "Playback Channels")
-        {
-            this.MakeProfileAction("tree");
-        }
+        public PlaybackChannelTrigger() : base("Playback Channel Buttons", "Options for Playback Channels", "Playback Channels") => this.MakeProfileAction("tree");
         protected override PluginProfileActionData GetProfileActionData()
         {
             //build a tree
@@ -49,6 +46,7 @@ namespace Loupedeck.TotalMixPlugin
         // button is pressed
         protected override void RunCommand(String actionParameter)
         {
+            this.Log.Info($"{DateTime.Now} - TotalMix: PlaybackChannelTrigger _ RunCommand {actionParameter}");
             // check action parameter is actually set
             if (actionParameter.Contains("|"))
             {
@@ -87,9 +85,9 @@ namespace Loupedeck.TotalMixPlugin
                     // notify the Loupedeck there was an update
                     this.ActionImageChanged(actionParameter);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    //
+                    this.Log.Error($"{DateTime.Now} - TotalMix: PlaybackChannelTrigger _ Exception {ex}");
                 }
 
             }
@@ -133,14 +131,7 @@ namespace Loupedeck.TotalMixPlugin
                 try
                 {
                     Globals.bankSettings[$"{this.bus}"].TryGetValue($"/1/{action}/1/{channel}", out var value);
-                    if (value != null)
-                    {
-                        this.currentState = Convert.ToBoolean(Int32.Parse(value));
-                    }
-                    else
-                    {
-                        this.currentState = false;
-                    }
+                    this.currentState = value != null && Convert.ToBoolean(Int32.Parse(value));
 
                     //get the trackname (what RME calls the channel name set in TotalMix)
                     Globals.bankSettings[$"{this.bus}"].TryGetValue($"/1/trackname{channel}", out trackname);

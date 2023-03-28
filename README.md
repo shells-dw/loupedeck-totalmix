@@ -61,6 +61,13 @@ where you can configure non-default values or the TotalMix connection.
 Note: mirroring of TotalMix is on by default (when you change some values in TotalMix itself or by other means outside the Loupedeck it will be reflected on the Loupedeck plugin), but it has a slight delay as the plugin queries TotalMix. It can have a bit of a performance impact constantly querying the data, which shouldn't be noticeable on most machines, but just in case mirroring isn't needed or wanted, it can be turned off here.
 Also note, mirroring only works for all the main functions, mute, solo, phantom power, volume, gain and pan.
 
+## Connecting to a TotalMix instance on another host
+To be able to use the plugin with another PC, three settings are mandatory:
+
+1. Set the IP of the machine the StreamDeck is connected to in the Setup for OSC part inside TotalMix as described above. Configure as described, but make sure to put the IP address (or FQDN) of the machine the StreamDeck is connected to in the "Remote Controller Address" field. This is needed so TotalMix sends its OSC responses to the computer that runs the plugin.
+2. Set the IP of the machine that runs TotalMix in the config file of this plugin (see above) in the value of interfaceIp, so the plugin knows where to send the commands.
+3. Make sure both machines have their firewall configured in a way that allows UDP communication on the ports that are set in the configuration (by default 7001 and 9001 UDP inbound to the TotalMix PC/outbound of the StreamDeck-PC, 9002 UDP inbound of the StreamDeck PC and outbound the TotalMix PC).
+
 ## Usage
 ### General
 
@@ -110,15 +117,23 @@ or use Ko-Fi [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi
 
 
 # Changelog
+## [1.8.3] - 2023-03-28
+### Fixed
+- Remote OSC instances (on another host) are working now. Please refer to the corresponding documentation, thanks for @roguedarkjedi for pointing that out.
+### Improved/Changed
+- Added documentation for remote host config.
+## [1.8.2] - 2022-12-29
+### Added
+- added images for EQ, Comp, Autolevel #beautify
+- 
+<details><summary>Changelog History</summary><p>
+
 ## [1.8.1] - 2022-12-29
 ### Updated
 - changed image name to Loupedeck's preferred naming scheme
 ## [1.8.0] - 2022-12-29
 ### Updated
 - Reworked/finalized logging
-
-<details><summary>Changelog History</summary><p>
-
 ## [1.7.1] - 2022-12-27
 ### Fixed
 - Beautified/clearified error message displayed when no connection to TotalMix is possible

@@ -227,16 +227,16 @@ namespace Loupedeck.TotalMixPlugin
                             bitmapBuilder.DrawText($"Lowcut\n{trackname}", x: 10, y: 50, width: 60, height: 20, BitmapColor.White, fontSize: 13);
                             break;
                         case "eqEnable":
-                            bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerNeutral80.png")));
-                            bitmapBuilder.DrawText($"EQ\n{trackname}", x: 10, y: 50, width: 60, height: 20, BitmapColor.White, fontSize: 13);
+                            bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("eq80.png")));
+                            bitmapBuilder.DrawText($"{trackname}", x: 10, y: 50, width: 60, height: 20, BitmapColor.White, fontSize: 13);
                             break;
                         case "compexpEnable":
-                            bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerNeutral80.png")));
-                            bitmapBuilder.DrawText($"Comp/Exp\n{trackname}", x: 10, y: 50, width: 60, height: 20, BitmapColor.White, fontSize: 13);
+                            bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("comp80.png")));
+                            bitmapBuilder.DrawText($"{trackname}", x: 10, y: 50, width: 60, height: 20, BitmapColor.White, fontSize: 13);
                             break;
                         case "alevEnable":
-                            bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("mixerNeutral80.png")));
-                            bitmapBuilder.DrawText($"Autolevel\n{trackname}", x: 10, y: 50, width: 60, height: 20, BitmapColor.White, fontSize: 13);
+                            bitmapBuilder.SetBackgroundImage(EmbeddedResources.ReadImage(EmbeddedResources.FindFile("autoLev80.png")));
+                            bitmapBuilder.DrawText($"{trackname}", x: 10, y: 50, width: 60, height: 20, BitmapColor.White, fontSize: 13);
                             break;
                         default:
                             bitmapBuilder.DrawRectangle(0, 0, 80, 80, BitmapColor.Black);
